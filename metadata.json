@@ -1,0 +1,7 @@
+{
+  "name": "Phoenix-MES FQC",
+  "description": "Optimized Mobile MES FQC Inspection Task Manager with AI Insights",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
