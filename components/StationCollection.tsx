@@ -154,7 +154,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
          {/* 1. Sidebar Header (Brand) */}
          <div className="h-16 flex items-center px-6 border-b border-slate-100 shrink-0">
             <div className="flex items-center gap-3 w-full">
-               <span className="font-bold text-xl tracking-tight text-blue-900 whitespace-nowrap">Phoenix MES</span>
+               <span className="font-bold text-xl tracking-tight text-blue-900 whitespace-nowrap">YLC-MES</span>
                <div className="flex-1"></div>
                <img 
                  src="http://127.0.0.1:32768/00.43.45/images/fqc___pad/u646.png" 

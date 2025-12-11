@@ -27,7 +27,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate }) =>
                     />
                     <div className="w-px h-6 bg-white/20"></div>
                     <span className="font-bold text-xl flex items-center gap-2">
-                        <Factory size={24} /> Phoenix-MES
+                        <Factory size={24} /> YLC-MES
                     </span>
                 </div>
                 <div className="flex items-center gap-4">
