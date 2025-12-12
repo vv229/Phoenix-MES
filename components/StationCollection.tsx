@@ -3,23 +3,17 @@ import {
   ChevronLeft, 
   Home,
   FileText, 
-  Settings, 
   Clipboard, 
   AlertTriangle,
-  File,
-  RefreshCw,
-  LogOut,
-  Menu,
   MoreHorizontal,
   Eye,
   UserCircle,
-  Scan,
-  Image as ImageIcon
+  Scan
 } from 'lucide-react';
 import { MOCK_TASKS, MOCK_BOM, MOCK_LOGS, MOCK_INSPECTION_DETAIL } from '../constants';
 import { PreProductionCheck } from './PreProductionCheck';
 import { PDFViewer } from './PDFViewer';
-import { InspectionDetail } from './InspectionDetail';
+import { CarrierLogo } from './CarrierLogo';
 
 interface StationCollectionProps {
   onBack: () => void;
@@ -156,11 +150,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
             <div className="flex items-center gap-3 w-full">
                <span className="font-bold text-xl tracking-tight text-blue-900 whitespace-nowrap">YLC-MES</span>
                <div className="flex-1"></div>
-               <img 
-                 src="http://127.0.0.1:32768/00.43.45/images/fqc___pad/u646.png" 
-                 alt="Carrier" 
-                 className="h-6 object-contain"
-               />
+               <CarrierLogo className="h-6 w-auto" />
             </div>
          </div>
 

@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Task, InspectionGroup, InspectionItem, InspectionDetailData, InspectionType, CapturedPhoto } from '../types';
 import { MOCK_INSPECTION_DETAIL } from '../constants';
+import { CarrierLogo } from './CarrierLogo';
 
 interface InspectionDetailProps {
   task: Task;
@@ -28,12 +29,8 @@ interface InspectionDetailProps {
 }
 
 // --- CSS Carrier Logo ---
-const CarrierLogo = () => (
-  <img 
-    src="http://127.0.0.1:32768/00.43.45/images/fqc___pad/u646.png" 
-    alt="Carrier Logo" 
-    className="h-8 object-contain mr-4"
-  />
+const Logo = () => (
+  <CarrierLogo className="h-8 w-auto mr-4" />
 );
 
 // --- Camera Modal Component ---
@@ -469,7 +466,7 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
 
         {/* Bottom Action Bar */}
         <div className="h-16 bg-white border-t border-slate-200 px-4 flex items-center justify-end gap-3 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-           <CarrierLogo />
+           <Logo />
            <div className="w-px h-8 bg-slate-200 mx-2"></div>
            <button 
                 onClick={() => setIsCameraOpen(true)}
@@ -689,7 +686,7 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
 
       {/* 3. Footer */}
       <div className="h-16 bg-white border-t border-slate-200 px-6 flex items-center justify-end shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-20 gap-6">
-          <CarrierLogo />
+          <Logo />
           <button className="px-8 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded shadow-sm transition-all hover:shadow-md transform active:scale-95">
              提交
           </button>

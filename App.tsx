@@ -16,13 +16,15 @@ import { StatsDashboard } from './components/StatsDashboard';
 import { InspectionDetail } from './components/InspectionDetail';
 import { NavigationHome } from './components/NavigationHome';
 import { StationCollection } from './components/StationCollection';
+import { LoginView } from './components/LoginView';
 import { analyzeInspectionTasks } from './services/geminiService';
+import { CarrierLogo } from './components/CarrierLogo';
 import ReactMarkdown from 'react-markdown';
 
-type ViewState = 'HOME' | 'STATION_COLLECTION' | 'FQC_LIST';
+type ViewState = 'LOGIN' | 'HOME' | 'STATION_COLLECTION' | 'FQC_LIST';
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState<ViewState>('HOME');
+  const [currentView, setCurrentView] = useState<ViewState>('LOGIN');
   const [tasks] = useState(MOCK_TASKS);
   const [filter, setFilter] = useState<FilterState>({
     status: 'ALL',
@@ -65,9 +67,19 @@ const App: React.FC = () => {
 
   // --- ROUTER LOGIC ---
 
+  // 0. Login View
+  if (currentView === 'LOGIN') {
+      return <LoginView onLogin={() => setCurrentView('HOME')} />;
+  }
+
   // 1. Navigation Home
   if (currentView === 'HOME') {
-      return <NavigationHome onNavigate={(view) => setCurrentView(view)} />;
+      return (
+        <NavigationHome 
+            onNavigate={(view) => setCurrentView(view)} 
+            onLogout={() => setCurrentView('LOGIN')}
+        />
+      );
   }
 
   // 2. Station Collection View
@@ -97,11 +109,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-3 text-primary-900 w-full">
              <span className="font-bold text-xl tracking-tight whitespace-nowrap">Phoenix MES</span>
              <div className="flex-1"></div>
-             <img 
-               src="http://127.0.0.1:32768/00.43.45/images/fqc___pad/u646.png" 
-               alt="Carrier Logo" 
-               className="h-8 object-contain"
-             />
+             <CarrierLogo className="h-8 w-auto object-contain" />
           </div>
         </div>
 
