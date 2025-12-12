@@ -24,15 +24,15 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
           alt="Factory Background" 
           className="w-full h-full object-cover"
         />
-        {/* Blue Tint Overlay */}
+        {/* Blue Tint Overlay to match the blue MES theme */}
         <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-blue-900/20"></div>
         
-        {/* Tech Grid Effect */}
+        {/* Tech Grid Effect (CSS decoration) */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" 
              style={{ 
-                 backgroundImage: 'radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px)', 
-                 backgroundSize: '30px 30px' 
+                 backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)', 
+                 backgroundSize: '50px 50px' 
              }}>
         </div>
       </div>

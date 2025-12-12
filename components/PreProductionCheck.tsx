@@ -39,7 +39,6 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                     type="text" 
                     placeholder="请输入设备/工治具编码或设备/工治具名称"
                     className="border border-slate-300 rounded px-3 py-1.5 w-96 text-sm focus:outline-none focus:border-blue-500"
-                    defaultValue=""
                  />
                  <button className="ml-2 p-2 rounded hover:bg-slate-100 text-red-500">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -103,7 +102,7 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                             </button>
                         </div>
 
-                        {/* Checklist items */}
+                        {/* Checklist items (Mocking the view from screenshot) */}
                         {MOCK_EQUIPMENT.flatMap(e => e.checkItems).length > 0 ? (
                             MOCK_EQUIPMENT.slice(0, 1).flatMap(e => e.checkItems).map((item, idx) => (
                                 <div key={idx} className="border border-slate-200 rounded p-3 text-sm">
@@ -121,15 +120,11 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                                         <div>最小值: {item.standard}</div>
                                         <div>周期: {item.cycle}</div>
                                         <div className="flex items-center gap-2">
-                                            实际值: <input className="border border-slate-300 rounded px-2 py-0.5 w-24" defaultValue="" />
+                                            实际值: <input className="border border-slate-300 rounded px-2 py-0.5 w-24" />
                                         </div>
                                         <div className="col-span-3 flex items-center gap-4">
-                                            <label className="flex items-center gap-1">
-                                                <input type="radio" name={`check_${idx}`} defaultChecked={item.result === 'OK'} /> 合格
-                                            </label>
-                                            <label className="flex items-center gap-1">
-                                                <input type="radio" name={`check_${idx}`} defaultChecked={item.result === 'NG'} /> 不合格
-                                            </label>
+                                            <label className="flex items-center gap-1"><input type="radio" name={`check_${idx}`} /> 合格</label>
+                                            <label className="flex items-center gap-1"><input type="radio" name={`check_${idx}`} /> 不合格</label>
                                         </div>
                                     </div>
                                 </div>
@@ -137,7 +132,7 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                         ) : (
                              <div className="p-4 text-center text-slate-400">请选择左侧设备以查看点检项目</div>
                         )}
-                         {/* Additional Mock Items to fill space */}
+                         {/* Additional Mock Items to fill space as per screenshot */}
                         <div className="border border-slate-200 rounded p-3 text-sm">
                             <div className="bg-slate-100 px-2 py-1 mb-2 font-bold text-slate-700">
                                 检查内容: 检查吊钩的保险扣，要求无磨损安全可靠;
@@ -147,9 +142,9 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                                 <div>标准值: 文本标签</div>
                                 <div>周期: 每天</div>
                                 <div className="col-span-2 flex items-center gap-4">
-                                     实际值: <input className="border border-slate-300 rounded px-2 py-0.5 w-24" defaultValue="" />
-                                     <label className="flex items-center gap-1"><input type="radio" name="mock_extra" /> 合格</label>
-                                     <label className="flex items-center gap-1"><input type="radio" name="mock_extra" defaultChecked /> 不合格</label>
+                                     实际值: <input className="border border-slate-300 rounded px-2 py-0.5 w-24" />
+                                     <label className="flex items-center gap-1"><input type="radio" /> 合格</label>
+                                     <label className="flex items-center gap-1"><input type="radio" defaultChecked /> 不合格</label>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +152,7 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
                 </div>
             </div>
             
-            {/* Pagination / Status Bar */}
+            {/* Pagination / Status Bar (Optional, keeping consistent with content) */}
             <div className="h-8 bg-slate-100 border-t border-slate-200 flex items-center justify-end px-4 text-xs text-slate-500">
                 第 1 页 共 2 页
             </div>
