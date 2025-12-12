@@ -85,6 +85,12 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                  <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 whitespace-nowrap">
                                     KC:{item.kc} &nbsp; KPC：{item.kpc}
                                  </span>
+                                 
+                                 {/* Moved Camera Button Here */}
+                                 <button className="h-6 w-8 flex items-center justify-center bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition-colors shrink-0">
+                                    <Camera size={14} />
+                                 </button>
+
                                  <div className="flex rounded overflow-hidden border border-slate-300 h-6 shrink-0">
                                     <button className={`px-2 text-xs font-bold transition-colors flex items-center ${item.result === 'OK' ? 'bg-[#7db828] text-white' : 'bg-white text-slate-500 hover:bg-slate-50'}`}>
                                         合格
@@ -111,14 +117,9 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                             </div>
                             
                             {/* Input Area */}
-                            <div className="flex items-center flex-wrap gap-2">
-                                {/* Camera Button */}
-                                <button className="p-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition-colors shrink-0">
-                                    <Camera size={16} />
-                                </button>
-
-                                {/* Inputs - Only for Quantitative */}
-                                {item.isQuantitative && (
+                            {item.isQuantitative && (
+                                <div className="flex items-center flex-wrap gap-2">
+                                    {/* Inputs - Only for Quantitative */}
                                     <div className="flex items-center gap-2 flex-wrap">
                                         <span className="text-slate-500 shrink-0 font-medium">
                                             测试值 (样本:{item.sampleCount}):
@@ -134,8 +135,8 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                             />
                                         ))}
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
@@ -203,7 +204,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                      <div className="relative group w-full">
                         <input 
                             type="text" 
-                            placeholder="扫码/SN/送货单"
+                            placeholder="扫码/SN"
                             className="w-full h-8 border border-slate-300 rounded pl-2 pr-8 text-xs focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all shadow-sm"
                         />
                         <button className="absolute right-1 top-0.5 bottom-0.5 aspect-square bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center transition-colors">
@@ -414,12 +415,12 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
              {/* 1. Top Navigation Grid */}
              <div className="grid grid-cols-7 gap-2 h-10 shrink-0">
                  <NavButton label="产前准备" onClick={() => setIsPreProductionOpen(true)} hasNotification />
-                 <NavButton label="叫料/接收" />
-                 <NavButton label="安灯管理" />
+                 <NavButton label="叫料" />
+                 <NavButton label="误工记录" />
                  <NavButton label="在线维修" />
                  <NavButton label="ESOP" onClick={handleEsopClick} />
                  <NavButton label="ECN变更" hasNotification />
-                 <NavButton label="切换工单" />
+                 <NavButton label="接收" />
              </div>
 
              {/* 2. Split Content: Left (Tabs) & Right (Materials/Work Unit) */}
@@ -478,9 +479,6 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                     <tr className="hover:bg-slate-50"><td className="px-1.5 py-1.5 text-center text-slate-500">6</td><td className="px-1.5 py-1.5 text-slate-700">2007750348</td><td className="px-1.5 py-1.5 text-center text-slate-700">2</td><td className="px-1.5 py-1.5 text-center text-slate-500">-</td></tr>
                                 </tbody>
                             </table>
-                         </div>
-                         <div className="h-6 bg-slate-50 border-t border-slate-200 flex items-center justify-center text-[10px] text-slate-400 gap-1 shrink-0">
-                             <Clock size={10} /> 2025/12/4 08:00
                          </div>
                      </div>
 
