@@ -6,7 +6,7 @@ export const CarrierLogo: React.FC<{ className?: string }> = ({ className }) => 
     alt="Carrier Logo"
     className={className}
     onError={(e) => {
-      // Fallback if image fails to load
+      // Fallback if image fails to load111
       e.currentTarget.style.display = 'none';
     }}
   />
