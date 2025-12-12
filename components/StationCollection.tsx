@@ -12,7 +12,14 @@ import {
   Download,
   Camera,
   Layout,
-  Factory
+  Factory,
+  ClipboardList,
+  Megaphone,
+  Timer,
+  Wrench,
+  BookOpen,
+  FileDiff,
+  Inbox
 } from 'lucide-react';
 import { MOCK_TASKS, MOCK_BOM, MOCK_LOGS } from '../constants';
 import { PreProductionCheck } from './PreProductionCheck';
@@ -86,7 +93,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                     KC:{item.kc} &nbsp; KPC：{item.kpc}
                                  </span>
                                  
-                                 {/* Moved Camera Button Here */}
+                                 {/* Camera Button */}
                                  <button className="h-6 w-8 flex items-center justify-center bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition-colors shrink-0">
                                     <Camera size={14} />
                                  </button>
@@ -413,14 +420,15 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
          <div className="flex-1 flex flex-col gap-2 p-2 overflow-hidden">
              
              {/* 1. Top Navigation Grid */}
-             <div className="grid grid-cols-7 gap-2 h-10 shrink-0">
-                 <NavButton label="产前准备" onClick={() => setIsPreProductionOpen(true)} hasNotification />
-                 <NavButton label="叫料" />
-                 <NavButton label="误工记录" />
-                 <NavButton label="在线维修" />
-                 <NavButton label="ESOP" onClick={handleEsopClick} />
-                 <NavButton label="ECN变更" hasNotification />
-                 <NavButton label="接收" />
+             {/* INCREASED HEIGHT by 20% (h-10 to h-12) */}
+             <div className="grid grid-cols-7 gap-2 h-12 shrink-0">
+                 <NavButton label="产前准备" icon={<ClipboardList size={18} />} onClick={() => setIsPreProductionOpen(true)} hasNotification />
+                 <NavButton label="叫料" icon={<Megaphone size={18} />} />
+                 <NavButton label="误工记录" icon={<Timer size={18} />} />
+                 <NavButton label="在线维修" icon={<Wrench size={18} />} />
+                 <NavButton label="ESOP" icon={<BookOpen size={18} />} onClick={handleEsopClick} />
+                 <NavButton label="ECN变更" icon={<FileDiff size={18} />} hasNotification />
+                 <NavButton label="物料接收" icon={<Inbox size={18} />} />
              </div>
 
              {/* 2. Split Content: Left (Tabs) & Right (Materials/Work Unit) */}
@@ -535,16 +543,18 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
 const NavButton: React.FC<{ 
     label: string; 
+    icon: React.ReactNode;
     hasNotification?: boolean;
     onClick?: () => void;
-}> = ({ label, hasNotification, onClick }) => (
+}> = ({ label, icon, hasNotification, onClick }) => (
     <button 
         onClick={onClick}
-        className="bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded flex items-center justify-center relative hover:bg-slate-50 hover:border-blue-300 hover:text-blue-700 transition-all shadow-sm active:bg-slate-100 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap"
+        className="bg-blue-600 text-white font-bold text-xs rounded-md flex items-center justify-center gap-1.5 relative hover:bg-blue-700 transition-all shadow-sm active:scale-95 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap overflow-hidden"
     >
-        {label}
+        {icon}
+        <span>{label}</span>
         {hasNotification && (
-            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full ring-1 ring-white"></span>
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-blue-600"></span>
         )}
     </button>
 );
