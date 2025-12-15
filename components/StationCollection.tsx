@@ -410,9 +410,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                  <button onClick={onHome} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
                      <Home size={20} />
                  </button>
-                 <button className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
-                     <MoreHorizontal size={20} />
-                 </button>
+               
             </div>
          </header>
 

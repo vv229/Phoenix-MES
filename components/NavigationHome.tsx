@@ -127,9 +127,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         )}
                     </div>
 
-                    <button className="p-2 hover:bg-white/10 rounded-full">
-                        <MoreHorizontal size={24} />
-                    </button>
+                  
                 </div>
             </header>
 
