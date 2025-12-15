@@ -37,9 +37,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         </div>
       </div>
 
-      {/* Top Left Logo Area */}
-      <div className="absolute top-8 left-8 z-10 p-3 bg-white/90 backdrop-blur-sm rounded shadow-lg">
-         <CarrierLogo className="h-8 w-auto text-blue-900" />
+      {/* Top Left Logo Area - No Background Box */}
+      <div className="absolute top-8 left-8 z-10">
+         <CarrierLogo className="h-14 w-auto" />
       </div>
       
       {/* Background Text Decoration */}
