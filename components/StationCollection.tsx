@@ -193,7 +193,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
             <div className="flex items-center gap-2 w-full">
                <span className="font-bold text-lg tracking-tight text-blue-900 whitespace-nowrap">YLC-MES</span>
                <div className="flex-1"></div>
-               <CarrierLogo className="h-5 w-auto" />
+               <CarrierLogo className="h-6 w-auto" />
             </div>
          </div>
 
@@ -420,15 +420,16 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
          <div className="flex-1 flex flex-col gap-2 p-2 overflow-hidden">
              
              {/* 1. Top Navigation Grid */}
-             {/* INCREASED HEIGHT by 20% (h-10 to h-12) */}
-             <div className="grid grid-cols-7 gap-2 h-12 shrink-0">
-                 <NavButton label="产前准备" icon={<ClipboardList size={18} />} onClick={() => setIsPreProductionOpen(true)} hasNotification />
-                 <NavButton label="叫料" icon={<Megaphone size={18} />} />
-                 <NavButton label="误工记录" icon={<Timer size={18} />} />
-                 <NavButton label="在线维修" icon={<Wrench size={18} />} />
-                 <NavButton label="ESOP" icon={<BookOpen size={18} />} onClick={handleEsopClick} />
-                 <NavButton label="ECN变更" icon={<FileDiff size={18} />} hasNotification />
-                 <NavButton label="物料接收" icon={<Inbox size={18} />} />
+             {/* INCREASED HEIGHT for max font size (h-12 to h-16) */}
+             <div className="grid grid-cols-7 gap-2 h-16 shrink-0">
+                 {/* Updated buttons: Red background for specific ones, removed notifications, larger font */}
+                 <NavButton label="产前准备" icon={<ClipboardList size={22} />} onClick={() => setIsPreProductionOpen(true)} bgColor="bg-red-600 hover:bg-red-700" />
+                 <NavButton label="叫料" icon={<Megaphone size={22} />} />
+                 <NavButton label="误工记录" icon={<Timer size={22} />} />
+                 <NavButton label="在线维修" icon={<Wrench size={22} />} />
+                 <NavButton label="ESOP" icon={<BookOpen size={22} />} onClick={handleEsopClick} />
+                 <NavButton label="ECN变更" icon={<FileDiff size={22} />} bgColor="bg-red-600 hover:bg-red-700" />
+                 <NavButton label="物料接收" icon={<Inbox size={22} />} />
              </div>
 
              {/* 2. Split Content: Left (Tabs) & Right (Materials/Work Unit) */}
@@ -544,18 +545,15 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 const NavButton: React.FC<{ 
     label: string; 
     icon: React.ReactNode;
-    hasNotification?: boolean;
+    bgColor?: string;
     onClick?: () => void;
-}> = ({ label, icon, hasNotification, onClick }) => (
+}> = ({ label, icon, bgColor = "bg-blue-600 hover:bg-blue-700", onClick }) => (
     <button 
         onClick={onClick}
-        className="bg-blue-600 text-white font-bold text-xs rounded-md flex items-center justify-center gap-1.5 relative hover:bg-blue-700 transition-all shadow-sm active:scale-95 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap overflow-hidden"
+        className={`${bgColor} text-white font-extrabold text-base rounded-md flex items-center justify-center gap-2 relative transition-all shadow-sm active:scale-95 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap overflow-hidden`}
     >
-        {icon}
+        <span className="transform scale-105">{icon}</span>
         <span>{label}</span>
-        {hasNotification && (
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-blue-600"></span>
-        )}
     </button>
 );
 

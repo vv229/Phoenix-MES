@@ -12,6 +12,8 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { CarrierLogo } from './CarrierLogo';
+import { SelectStationModal } from './SelectStationModal';
+import { ClockInModal } from './ClockInModal';
 
 interface NavigationHomeProps {
   onNavigate: (view: 'STATION_COLLECTION' | 'FQC_LIST') => void;
@@ -20,13 +22,42 @@ interface NavigationHomeProps {
 
 export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLogout }) => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [isStationModalOpen, setIsStationModalOpen] = useState(false);
+    const [isClockInModalOpen, setIsClockInModalOpen] = useState(false);
+
+    // Flow Handler
+    const handleStationCollectionClick = () => {
+        setIsStationModalOpen(true);
+    };
+
+    const handleStationConfirm = () => {
+        setIsStationModalOpen(false);
+        setIsClockInModalOpen(true);
+    };
+
+    const handleClockInConfirm = () => {
+        setIsClockInModalOpen(false);
+        onNavigate('STATION_COLLECTION');
+    };
 
     return (
         <div className="h-screen w-full bg-slate-50 flex flex-col">
+            {/* Modals */}
+            <SelectStationModal 
+                isOpen={isStationModalOpen} 
+                onClose={() => setIsStationModalOpen(false)} 
+                onConfirm={handleStationConfirm} 
+            />
+            <ClockInModal 
+                isOpen={isClockInModalOpen}
+                onClose={() => setIsClockInModalOpen(false)}
+                onConfirm={handleClockInConfirm}
+            />
+
             {/* Header */}
             <header className="h-16 bg-slate-900 text-white flex items-center justify-between px-6 shrink-0 shadow-md relative z-50">
                 <div className="flex items-center gap-4">
-                    <CarrierLogo className="h-8 w-auto" />
+                    <CarrierLogo className="h-8 w-auto text-white" />
                     <div className="w-px h-6 bg-white/20"></div>
                     <span className="font-bold text-xl flex items-center gap-2">
                         <Factory size={24} /> YLC-MES
@@ -112,7 +143,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         <NavCard 
                             title="过站采集" 
                             icon={<Factory size={32} />} 
-                            onClick={() => onNavigate('STATION_COLLECTION')}
+                            onClick={handleStationCollectionClick}
                             color="text-blue-600"
                         />
                         <NavCard 

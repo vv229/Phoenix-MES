@@ -20,13 +20,13 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/CarrierFile/Picture1.png" 
+          src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop" 
           alt="Factory Background" 
           className="w-full h-full object-cover"
         />
         {/* Blue Tint Overlay to match the blue MES theme */}
-        <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-transparent to-blue-900/20"></div>
+        <div className="absolute inset-0 bg-blue-900/60 mix-blend-multiply"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-blue-900/20 to-blue-900/40"></div>
         
         {/* Tech Grid Effect (CSS decoration) */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" 
@@ -38,8 +38,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
       </div>
 
       {/* Top Left Logo Area */}
-      <div className="absolute top-8 left-8 z-10 p-2 bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 rounded">
-         <CarrierLogo className="h-10 w-auto text-white brightness-0 invert" />
+      <div className="absolute top-8 left-8 z-10 p-3 bg-white/90 backdrop-blur-sm rounded shadow-lg">
+         <CarrierLogo className="h-8 w-auto text-blue-900" />
       </div>
       
       {/* Background Text Decoration */}
@@ -55,7 +55,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
          {/* Right Login Area (30%) */}
          <div className="col-span-1 lg:col-span-3 flex items-center justify-center p-4 lg:pr-12">
             {/* Login Card */}
-            <div className="bg-white w-full max-w-[400px] shadow-2xl border-2 border-blue-500 rounded-sm">
+            <div className="bg-white w-full max-w-[400px] shadow-2xl border-t-4 border-blue-600 rounded-sm">
                 <div className="p-8">
                     {/* Header */}
                     <div className="flex justify-between items-start mb-8">
