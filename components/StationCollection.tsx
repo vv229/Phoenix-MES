@@ -31,6 +31,9 @@ interface StationCollectionProps {
   onHome: () => void;
 }
 
+// Carrier Logo Blue (Updated)
+const BRAND_BLUE = '#142C73';
+
 // Updated Mock Data with Quantitative logic and Limits
 const MOCK_CHECKS_SCREENSHOT = [
     { id: 1, name: '选项确认', standard: '确认机组制造的选项与生产订单相符', vals: [''], result: 'OK', isQuantitative: false, sampleCount: 1, kc: '否', kpc: '是' },
@@ -81,7 +84,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         {/* Header Row: Seq + Name + Result Toggle */}
                         <div className="bg-slate-50 border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shrink-0">
                             <div className="flex items-center gap-3 overflow-hidden">
-                                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-base font-bold shrink-0">
+                                <div className="w-8 h-8 text-white rounded-full flex items-center justify-center text-base font-bold shrink-0" style={{ backgroundColor: BRAND_BLUE }}>
                                     {index + 1}
                                 </div>
                                 <span className="font-bold text-slate-900 text-lg truncate">{item.name}</span>
@@ -94,7 +97,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                  </span>
                                  
                                  {/* Camera Button */}
-                                 <button className="h-8 w-10 flex items-center justify-center bg-blue-50 text-blue-600 border border-blue-200 rounded hover:bg-blue-100 transition-colors shrink-0">
+                                 <button className="h-8 w-10 flex items-center justify-center bg-[#142C73]/5 border border-[#142C73]/20 rounded hover:bg-[#142C73]/10 transition-colors shrink-0" style={{ color: BRAND_BLUE }}>
                                     <Camera size={18} />
                                  </button>
 
@@ -141,7 +144,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                                 type="text" 
                                                 defaultValue={item.vals[i] || ''}
                                                 placeholder={`#${i+1}`}
-                                                className="border border-slate-300 rounded px-2 py-1.5 w-20 bg-white focus:border-blue-500 outline-none transition-colors text-center font-mono font-bold text-slate-800"
+                                                className="border border-slate-300 rounded px-2 py-1.5 w-20 bg-white focus:border-[#142C73] outline-none transition-colors text-center font-mono font-bold text-slate-800"
                                             />
                                         ))}
                                     </div>
@@ -159,7 +162,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
              {MOCK_LOGS.map(log => (
                 <div key={log.id} className="mb-2 pb-2 border-b border-slate-200 last:border-0 flex">
                    <span className="text-slate-500 mr-3 w-36 shrink-0">{log.timestamp}</span> 
-                   <span className="font-bold text-blue-700 mr-3 w-16 shrink-0">[{log.action}]</span> 
+                   <span className="font-bold mr-3 w-16 shrink-0" style={{ color: BRAND_BLUE }}>[{log.action}]</span> 
                    <span className={log.type === 'ERROR' ? 'text-red-600 font-bold' : 'text-slate-700'}>
                       {log.message}
                    </span>
@@ -194,7 +197,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
          {/* 1. Sidebar Header (Brand) */}
          <div className="h-16 flex items-center px-4 border-b border-slate-100 shrink-0 bg-slate-50">
             <div className="flex items-center gap-3 w-full">
-               <span className="font-bold text-xl tracking-tight text-blue-900 whitespace-nowrap">YLC-MES</span>
+               <span className="font-bold text-xl tracking-tight whitespace-nowrap" style={{ color: BRAND_BLUE }}>YLC-MES</span>
                <div className="flex-1"></div>
                <CarrierLogo className="h-7 w-auto" />
             </div>
@@ -206,7 +209,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
              {/* Scan Area */}
              <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm">
                  <div className="flex items-center mb-3">
-                    <div className="w-1.5 h-5 bg-blue-600 mr-2.5 rounded-full"></div>
+                    <div className="w-1.5 h-5 mr-2.5 rounded-full" style={{ backgroundColor: BRAND_BLUE }}></div>
                     <div className="text-base font-bold text-slate-800">扫码信息</div>
                  </div>
                  
@@ -215,14 +218,14 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <input 
                             type="text" 
                             placeholder="扫码/SN"
-                            className="w-full h-10 border border-slate-300 rounded pl-3 pr-10 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all shadow-sm font-medium"
+                            className="w-full h-10 border border-slate-300 rounded pl-3 pr-10 text-sm focus:outline-none focus:border-[#142C73] focus:ring-2 focus:ring-[#142C73]/10 transition-all shadow-sm font-medium"
                         />
-                        <button className="absolute right-1 top-1 bottom-1 aspect-square bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center justify-center transition-colors">
+                        <button className="absolute right-1 top-1 bottom-1 aspect-square text-white rounded flex items-center justify-center transition-colors hover:bg-[#0f2259]" style={{ backgroundColor: BRAND_BLUE }}>
                             <Scan size={18} />
                         </button>
                      </div>
                      <div className="flex gap-2 w-full">
-                        <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm font-bold shadow-sm active:scale-95">进站</button>
+                        <button className="flex-1 text-white py-2 rounded text-sm font-bold shadow-sm active:scale-95 hover:bg-[#0f2259]" style={{ backgroundColor: BRAND_BLUE }}>进站</button>
                         <button className="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2 rounded text-sm font-bold shadow-sm active:scale-95">关键件</button>
                         <button className="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2 rounded text-sm font-bold shadow-sm active:scale-95">出站</button>
                      </div>
@@ -241,7 +244,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="w-1.5 h-5 bg-amber-500 mr-2.5 rounded-full"></div>
                         <span className="font-bold text-slate-800 text-base">在制工单</span>
                      </div>
-                     <button className="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1 rounded hover:bg-blue-100 transition-colors">切换</button>
+                     <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
                  </div>
                  
                  {/* Stats Mini Grid */}
@@ -268,7 +271,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <DetailRow label="机组" value={currentTask.unitModel} />
                         <DetailRow label="型号" value={currentTask.productCode} />
                     </div>
-                    {/* Countdown Timer */}
+                    {/* Countdown Timer (Updated Color) */}
                     <div className="w-20 flex flex-col items-center justify-center ml-2 shrink-0">
                         {/* SVG Timer */}
                         <div className="relative w-12 h-12">
@@ -278,19 +281,19 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                {/* Progress Circle (approx 75%) */}
                                <circle 
                                     cx="28" cy="28" r="24" 
-                                    stroke="#3b82f6" strokeWidth="4" 
+                                    stroke={BRAND_BLUE} strokeWidth="4" 
                                     fill="none" 
                                     strokeDasharray="150.8" 
                                     strokeDashoffset="37.7" 
                                     strokeLinecap="round"
                                 />
                                 {/* Pointer */}
-                                <circle cx="28" cy="52" r="3" fill="#3b82f6" stroke="white" strokeWidth="1" />
+                                <circle cx="28" cy="52" r="3" fill={BRAND_BLUE} stroke="white" strokeWidth="1" />
                             </svg>
                             {/* Text */}
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-base font-bold text-blue-600 leading-none">15</span>
-                                <span className="text-[10px] text-blue-400 font-medium leading-none mt-0.5">min</span>
+                                <span className="text-base font-bold leading-none" style={{ color: BRAND_BLUE }}>15</span>
+                                <span className="text-[10px] font-medium leading-none mt-0.5" style={{ color: `${BRAND_BLUE}99` }}>min</span>
                             </div>
                         </div>
                         <div className="text-[10px] font-bold text-slate-800 mt-1.5 whitespace-nowrap">12.12 PM</div>
@@ -305,7 +308,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <DetailRow label="机组" value="30RB202CPT255" />
                         <DetailRow label="型号" value="30RB202C" />
                     </div>
-                    {/* Countdown Timer (Different value for variety) */}
+                    {/* Countdown Timer (Amber - different context, kept different) */}
                     <div className="w-20 flex flex-col items-center justify-center ml-2 shrink-0">
                         <div className="relative w-12 h-12">
                             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 56 56">
@@ -338,7 +341,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="w-1.5 h-5 bg-lime-500 mr-2.5 rounded-full"></div>
                         <div className="text-base font-bold text-slate-800">人员上岗</div>
                     </div>
-                    <button className="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1 rounded hover:bg-blue-100 transition-colors">上/下岗</button>
+                    <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>上/下岗</button>
                 </div>
                 <div className="space-y-2.5">
                     {/* Person 1 */}
@@ -349,7 +352,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">张三</div>
-                                 <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded">1H</span>
+                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>1H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 08:00</div>
                         </div>
@@ -362,7 +365,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">李四</div>
-                                 <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded">3H</span>
+                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>3H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 06:00</div>
                         </div>
@@ -375,7 +378,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">王五</div>
-                                 <span className="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded">0.5H</span>
+                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>0.5H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 08:30</div>
                         </div>
@@ -387,7 +390,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
          {/* 3. User Profile Footer */}
          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 shadow-sm">
+            <div className="w-10 h-10 bg-[#142C73]/10 rounded-full flex items-center justify-center shadow-sm" style={{ color: BRAND_BLUE }}>
                 <UserCircle size={22} />
             </div>
             <div className="flex-1 min-w-0">
@@ -445,7 +448,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                          <div className="flex items-center gap-3 w-48">
                                  <span className="text-sm font-bold text-slate-600 whitespace-nowrap">进度: 60%</span>
                                  <div className="flex-1 h-2 bg-slate-200 rounded-full overflow-hidden">
-                                     <div className="h-full bg-blue-600 w-[60%]"></div>
+                                     <div className="h-full w-[60%]" style={{ backgroundColor: BRAND_BLUE }}></div>
                                  </div>
                          </div>
                      </div>
@@ -497,7 +500,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                             <div className="flex items-center gap-2 border-l-4 border-lime-500 pl-2.5 h-5">
                                 <span className="font-bold text-slate-800 text-base">当前工作单元</span>
                             </div>
-                            <button className="bg-blue-50 text-blue-600 text-xs font-bold px-3 py-1 rounded hover:bg-blue-100 transition-colors">切换</button>
+                            <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
                          </div>
                          <div className="space-y-3 flex-1">
                              <div className="flex flex-col gap-1.5">
@@ -542,12 +545,13 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
 // --- Sub-components ---
 
+// Updated default color to Carrier Blue (#142C73)
 const NavButton: React.FC<{ 
     label: string; 
     icon: React.ReactNode;
     bgColor?: string;
     onClick?: () => void;
-}> = ({ label, icon, bgColor = "bg-blue-600 hover:bg-blue-700", onClick }) => (
+}> = ({ label, icon, bgColor = "bg-[#142C73] hover:bg-[#0f2259]", onClick }) => (
     <button 
         onClick={onClick}
         className={`${bgColor} text-white font-extrabold text-lg rounded-lg flex items-center justify-center gap-2.5 relative transition-all shadow-sm active:scale-95 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap overflow-hidden`}
@@ -574,10 +578,11 @@ const TabButton: React.FC<{
         className={`
             px-6 h-full text-sm font-bold transition-all relative border-r border-slate-200 last:border-0 flex items-center
             ${isActive 
-                ? 'bg-white text-blue-700 border-t-4 border-t-blue-600' 
+                ? 'bg-white border-t-4' 
                 : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
             }
         `}
+        style={isActive ? { color: '#142C73', borderColor: '#142C73' } : {}}
     >
         {label}
     </button>
