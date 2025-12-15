@@ -421,7 +421,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
              
              {/* 1. Top Navigation Grid */}
              {/* INCREASED HEIGHT for max font size (h-12 to h-16) */}
-             <div className="grid grid-cols-7 gap-2 h-16 shrink-0">
+             <div className="grid grid-cols-7 gap-2 h-14 shrink-0">
                  {/* Updated buttons: Red background for specific ones, removed notifications, larger font */}
                  <NavButton label="产前准备" icon={<ClipboardList size={22} />} onClick={() => setIsPreProductionOpen(true)} bgColor="bg-red-600 hover:bg-red-700" />
                  <NavButton label="叫料" icon={<Megaphone size={22} />} />

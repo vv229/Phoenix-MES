@@ -160,7 +160,7 @@ export const PreProductionCheck: React.FC<PreProductionCheckProps> = ({ isOpen, 
              {/* Footer - Unified Style */}
             <footer className="h-6 bg-slate-800 text-slate-400 text-[10px] flex items-center justify-between px-4 shrink-0">
                 <span>2025/12/12 星期二 14:00:12</span>
-                <span>广东赛意信息科技股份有限公司</span>
+                <span>广州赛意信息科技股份有限公司</span>
             </footer>
         </div>
     );

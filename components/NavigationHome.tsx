@@ -182,7 +182,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
             {/* Footer */}
             <footer className="h-10 bg-slate-900 text-slate-400 text-xs flex items-center justify-between px-6">
                 <span>2025/12/12 星期二 14:00:12</span>
-                <span>广东赛意信息科技股份有限公司</span>
+                <span>广州赛意信息科技股份有限公司</span>
             </footer>
         </div>
     );
