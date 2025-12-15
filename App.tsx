@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import { 
   ScanLine, 
-  Sparkles, 
   Search,
   LayoutGrid,
   Filter,
   RefreshCw,
   Bell,
-  UserCircle
+  UserCircle,
+  ChevronLeft,
+  Home
 } from 'lucide-react';
 import { MOCK_TASKS, WORKSHOPS } from './constants';
 import { InspectionStatus, FilterState, Task } from './types';
@@ -19,9 +20,10 @@ import { StationCollection } from './components/StationCollection';
 import { LoginView } from './components/LoginView';
 import { analyzeInspectionTasks } from './services/geminiService';
 import { CarrierLogo } from './components/CarrierLogo';
-import ReactMarkdown from 'react-markdown';
 
 type ViewState = 'LOGIN' | 'HOME' | 'STATION_COLLECTION' | 'FQC_LIST';
+
+const BRAND_BLUE = '#0A2EF5';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('LOGIN');
@@ -31,8 +33,6 @@ const App: React.FC = () => {
     search: '',
     workshop: 'ALL'
   });
-  const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
-  const [aiInsight, setAiInsight] = useState<string | null>(null);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   // Filter Logic
@@ -52,14 +52,6 @@ const App: React.FC = () => {
 
   // Tab Counts
   const pendingCount = tasks.filter(t => t.status === InspectionStatus.PENDING).length;
-
-  const handleAiAnalysis = async () => {
-    setIsAiAnalyzing(true);
-    setAiInsight(null);
-    const insight = await analyzeInspectionTasks(filteredTasks);
-    setAiInsight(insight);
-    setIsAiAnalyzing(false);
-  };
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
@@ -97,42 +89,47 @@ const App: React.FC = () => {
       return <InspectionDetail task={selectedTask} onBack={() => setSelectedTask(null)} />;
   }
 
-  // 4. FQC List View (Existing App Logic)
+  // 4. FQC List View (Redesigned Layout)
   return (
-    <div className="flex h-screen w-full bg-slate-100 text-slate-800 font-sans overflow-hidden">
+    <div className="h-screen w-full bg-slate-100 flex font-sans overflow-hidden text-slate-800">
       
-      {/* 1. LEFT SIDEBAR - Fixed Width */}
-      <aside className="w-80 flex-shrink-0 bg-white shadow-xl z-20 flex flex-col h-full border-r border-slate-200">
+      {/* 1. LEFT SIDEBAR (22%) - Matches StationCollection Style */}
+      <aside className="w-[22%] min-w-[280px] max-w-[340px] bg-white border-r border-slate-200 flex flex-col shrink-0 z-20 shadow-lg">
         
         {/* Sidebar Header */}
-        <div className="h-16 flex items-center px-6 border-b border-slate-100 bg-white flex-shrink-0 cursor-pointer" onClick={() => setCurrentView('HOME')}>
-          <div className="flex items-center gap-3 text-primary-900 w-full">
-             <span className="font-bold text-xl tracking-tight whitespace-nowrap">Phoenix MES</span>
-             <div className="flex-1"></div>
-             <CarrierLogo className="h-8 w-auto object-contain" />
-          </div>
+        <div className="h-16 flex items-center px-4 border-b border-slate-100 shrink-0 bg-slate-50">
+           <div className="flex items-center gap-3 w-full">
+              <span className="font-bold text-xl tracking-tight whitespace-nowrap" style={{ color: BRAND_BLUE }}>YLC-MES</span>
+              <div className="flex-1"></div>
+              <CarrierLogo className="h-7 w-auto" />
+           </div>
         </div>
 
         {/* Sidebar Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-5 no-scrollbar flex flex-col gap-6">
+        <div className="flex-1 overflow-y-auto p-4 no-scrollbar flex flex-col gap-6">
            
-           {/* Stats Section */}
+           {/* Real-time Overview (Stats) */}
            <div>
-              <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">实时概览</h2>
+              <div className="flex items-center gap-2 mb-3 px-1">
+                 <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
+                 <h2 className="text-sm font-bold text-slate-600">实时概览</h2>
+              </div>
               <StatsDashboard tasks={filteredTasks.length === tasks.length ? tasks : filteredTasks} />
            </div>
 
-          
-
            {/* Workshop Filters */}
            <div>
-              <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                 <Filter size={12} /> 车间筛选
-              </h2>
-              <div className="space-y-1">
+              <div className="flex items-center gap-2 mb-3 px-1">
+                  <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
+                  <h2 className="text-sm font-bold text-slate-600 flex items-center gap-2">
+                     车间筛选
+                  </h2>
+              </div>
+              
+              <div className="space-y-2 bg-white rounded-xl border border-slate-200 p-2 shadow-sm">
                  <button
                     onClick={() => setFilter(prev => ({...prev, workshop: 'ALL'}))}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${filter.workshop === 'ALL' ? 'bg-slate-100 text-primary-700 font-semibold' : 'text-slate-600 hover:bg-slate-50'}`}
+                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all font-medium ${filter.workshop === 'ALL' ? 'bg-slate-100 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}
                  >
                     全部车间
                  </button>
@@ -140,10 +137,10 @@ const App: React.FC = () => {
                     <button
                         key={ws}
                         onClick={() => setFilter(prev => ({...prev, workshop: ws}))}
-                        className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between items-center ${filter.workshop === ws ? 'bg-primary-50 text-primary-700 font-semibold border border-primary-100' : 'text-slate-600 hover:bg-slate-50'}`}
+                        className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex justify-between items-center font-medium ${filter.workshop === ws ? 'bg-blue-50 text-blue-700 shadow-sm ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50'}`}
                     >
                         {ws}
-                        <span className="text-xs bg-white px-2 py-0.5 rounded-full text-slate-400 shadow-sm border border-slate-100">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${filter.workshop === ws ? 'bg-white text-blue-600 shadow-sm' : 'bg-slate-100 text-slate-400'}`}>
                            {tasks.filter(t => t.workshop === ws && (filter.status === 'ALL' || t.status === filter.status)).length}
                         </span>
                     </button>
@@ -153,79 +150,79 @@ const App: React.FC = () => {
         </div>
 
         {/* User Profile Footer */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center text-primary-700">
-                <UserCircle size={20} />
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3 shrink-0">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-white font-bold" style={{ backgroundColor: BRAND_BLUE }}>
+                <UserCircle size={24} />
             </div>
             <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-slate-800 truncate">张工 (QC主管)</div>
+                <div className="text-sm font-bold text-slate-800 truncate">张工 (QC主管)</div>
                 <div className="text-xs text-slate-500 truncate">质量管理部 - FQC组</div>
             </div>
         </div>
       </aside>
 
       {/* 2. MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col min-w-0 bg-slate-100/50 relative">
+      <main className="flex-1 flex flex-col min-w-0 bg-slate-50/50 relative">
         
-        {/* Header Toolbar */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shadow-sm flex-shrink-0 z-10">
-           
-           {/* Left: Tab Switcher */}
-           <div className="flex bg-slate-100 p-1 rounded-lg">
-              <button 
-                 onClick={() => setFilter(prev => ({...prev, status: InspectionStatus.PENDING}))}
-                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${filter.status === InspectionStatus.PENDING ? 'bg-white text-primary-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                 待检任务 ({pendingCount})
-              </button>
-              <button 
-                 onClick={() => setFilter(prev => ({...prev, status: 'ALL'}))}
-                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${filter.status === 'ALL' ? 'bg-white text-primary-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                 全部任务
-              </button>
-           </div>
-
-           {/* Right: Search & Actions */}
-           <div className="flex items-center gap-4">
-              <div className="relative w-80">
-                 <input 
-                    type="text" 
-                    placeholder="输入单号 / 产品名称 / SN..."
-                    value={filter.search}
-                    onChange={(e) => setFilter(prev => ({...prev, search: e.target.value}))}
-                    className="w-full bg-slate-50 border border-slate-200 pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-400 transition-all"
-                
-                 />
-                  
-                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                
-              </div>
-               <div className="bg-primary-600 p-1.5 rounded-lg text-white shadow-sm">
-                <ScanLine size={20} />
-             </div>
-              <button className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors relative">
-                 <Bell size={20} />
-                 <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
-              </button>
-              <button className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
-                 <RefreshCw size={20} />
-              </button>
-           </div>
-        </header>
-
-        {/* Task Grid Area */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-8">
-            <div className="flex items-center justify-between mb-4">
-               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                  <LayoutGrid size={20} className="text-slate-400" />
-                  {filter.status === 'ALL' ? '全部任务列表' : '待处理任务'}
-               </h2>
-               <span className="text-sm text-slate-500">共 {filteredTasks.length} 条记录</span>
+        {/* Header Toolbar (Matches StationCollection Header) */}
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shadow-sm shrink-0 z-10">
+            <div className="flex items-center gap-3">
+                 <button onClick={() => setCurrentView('HOME')} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
+                    <ChevronLeft size={26} strokeWidth={2.5} />
+                </button>
+                <span className="text-slate-800 font-bold text-2xl tracking-wide">成品检验</span>
             </div>
 
+            <div className="flex items-center gap-2">
+                 <button onClick={() => setCurrentView('HOME')} className="p-2.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
+                     <Home size={24} />
+                 </button>
+            </div>
+        </header>
+
+        {/* Filters & Actions Toolbar */}
+        <div className="px-6 py-4 flex items-center justify-between shrink-0">
+             {/* Left: Tab Switcher (Pill Style) */}
+             <div className="flex bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
+                <button 
+                   onClick={() => setFilter(prev => ({...prev, status: InspectionStatus.PENDING}))}
+                   className={`px-5 py-2 rounded-md text-sm font-bold transition-all ${filter.status === InspectionStatus.PENDING ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+                >
+                   待检任务 ({pendingCount})
+                </button>
+                <div className="w-px bg-slate-200 my-1"></div>
+                <button 
+                   onClick={() => setFilter(prev => ({...prev, status: 'ALL'}))}
+                   className={`px-5 py-2 rounded-md text-sm font-bold transition-all ${filter.status === 'ALL' ? 'bg-blue-50 text-blue-700 shadow-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+                >
+                   全部任务
+                </button>
+             </div>
+
+             {/* Right: Search & Actions */}
+             <div className="flex items-center gap-3">
+                <div className="relative w-96">
+                   <input 
+                      type="text" 
+                      placeholder="输入单号 / 产品名称 / SN..."
+                      value={filter.search}
+                      onChange={(e) => setFilter(prev => ({...prev, search: e.target.value}))}
+                      className="w-full bg-white border border-slate-200 pl-10 pr-4 py-2.5 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+                  
+                   />
+                   <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                </div>
+                
+                <button className="h-10 w-10 flex items-center justify-center rounded-lg text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-95" style={{ backgroundColor: BRAND_BLUE }}>
+                   <ScanLine size={20} />
+                </button>
+             </div>
+        </div>
+
+        {/* Task Grid Area */}
+        <div className="flex-1 overflow-y-auto px-6 pb-6">
             {filteredTasks.length > 0 ? (
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5">
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                   {filteredTasks.map(task => (
                      <TaskCard 
                         key={task.id} 
@@ -235,11 +232,11 @@ const App: React.FC = () => {
                   ))}
                </div>
             ) : (
-               <div className="h-64 flex flex-col items-center justify-center text-slate-400">
-                  <div className="w-20 h-20 bg-slate-200 rounded-full flex items-center justify-center mb-4">
-                     <Search size={32} className="opacity-40" />
+               <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                  <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm border border-slate-100">
+                     <Search size={40} className="text-slate-300" />
                   </div>
-                  <p className="text-lg font-medium">未找到符合条件的任务</p>
+                  <p className="text-lg font-bold text-slate-600">未找到符合条件的任务</p>
                   <p className="text-sm mt-1">请尝试调整搜索关键词或筛选条件</p>
                </div>
             )}

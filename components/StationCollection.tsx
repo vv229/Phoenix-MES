@@ -31,8 +31,8 @@ interface StationCollectionProps {
   onHome: () => void;
 }
 
-// Carrier Logo Blue (Updated)
-const BRAND_BLUE = '#142C73';
+// Carrier Logo Blue (Updated to brighter blue)
+const BRAND_BLUE = '#0A2EF5';
 
 // Updated Mock Data with Quantitative logic and Limits
 const MOCK_CHECKS_SCREENSHOT = [
@@ -97,7 +97,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                  </span>
                                  
                                  {/* Camera Button */}
-                                 <button className="h-8 w-10 flex items-center justify-center bg-[#142C73]/5 border border-[#142C73]/20 rounded hover:bg-[#142C73]/10 transition-colors shrink-0" style={{ color: BRAND_BLUE }}>
+                                 <button className="h-8 w-10 flex items-center justify-center bg-[#0A2EF5]/5 border border-[#0A2EF5]/20 rounded hover:bg-[#0A2EF5]/10 transition-colors shrink-0" style={{ color: BRAND_BLUE }}>
                                     <Camera size={18} />
                                  </button>
 
@@ -144,7 +144,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                                 type="text" 
                                                 defaultValue={item.vals[i] || ''}
                                                 placeholder={`#${i+1}`}
-                                                className="border border-slate-300 rounded px-2 py-1.5 w-20 bg-white focus:border-[#142C73] outline-none transition-colors text-center font-mono font-bold text-slate-800"
+                                                className="border border-slate-300 rounded px-2 py-1.5 w-20 bg-white focus:border-[#0A2EF5] outline-none transition-colors text-center font-mono font-bold text-slate-800"
                                             />
                                         ))}
                                     </div>
@@ -218,14 +218,14 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <input 
                             type="text" 
                             placeholder="扫码/SN"
-                            className="w-full h-10 border border-slate-300 rounded pl-3 pr-10 text-sm focus:outline-none focus:border-[#142C73] focus:ring-2 focus:ring-[#142C73]/10 transition-all shadow-sm font-medium"
+                            className="w-full h-10 border border-slate-300 rounded pl-3 pr-10 text-sm focus:outline-none focus:border-[#0A2EF5] focus:ring-2 focus:ring-[#0A2EF5]/10 transition-all shadow-sm font-medium"
                         />
-                        <button className="absolute right-1 top-1 bottom-1 aspect-square text-white rounded flex items-center justify-center transition-colors hover:bg-[#0f2259]" style={{ backgroundColor: BRAND_BLUE }}>
+                        <button className="absolute right-1 top-1 bottom-1 aspect-square text-white rounded flex items-center justify-center transition-colors hover:bg-[#0621b5]" style={{ backgroundColor: BRAND_BLUE }}>
                             <Scan size={18} />
                         </button>
                      </div>
                      <div className="flex gap-2 w-full">
-                        <button className="flex-1 text-white py-2 rounded text-sm font-bold shadow-sm active:scale-95 hover:bg-[#0f2259]" style={{ backgroundColor: BRAND_BLUE }}>进站</button>
+                        <button className="flex-1 text-white py-2 rounded text-sm font-bold shadow-sm active:scale-95 hover:bg-[#0621b5]" style={{ backgroundColor: BRAND_BLUE }}>进站</button>
                         <button className="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2 rounded text-sm font-bold shadow-sm active:scale-95">关键件</button>
                         <button className="flex-1 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 py-2 rounded text-sm font-bold shadow-sm active:scale-95">出站</button>
                      </div>
@@ -244,7 +244,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="w-1.5 h-5 bg-amber-500 mr-2.5 rounded-full"></div>
                         <span className="font-bold text-slate-800 text-base">在制工单</span>
                      </div>
-                     <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
+                     <button className="bg-[#0A2EF5]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#0A2EF5]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
                  </div>
                  
                  {/* Stats Mini Grid */}
@@ -341,7 +341,10 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="w-1.5 h-5 bg-lime-500 mr-2.5 rounded-full"></div>
                         <div className="text-base font-bold text-slate-800">人员上岗</div>
                     </div>
-                    <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>上/下岗</button>
+                    <div className="flex gap-2">
+                        <button className="text-white text-xs font-bold px-3 py-1 rounded shadow-sm transition-colors hover:opacity-90" style={{ backgroundColor: BRAND_BLUE }}>上岗</button>
+                        <button className="bg-white border border-slate-300 text-slate-600 text-xs font-bold px-3 py-1 rounded hover:bg-slate-50 transition-colors shadow-sm">离岗</button>
+                    </div>
                 </div>
                 <div className="space-y-2.5">
                     {/* Person 1 */}
@@ -352,7 +355,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">张三</div>
-                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>1H</span>
+                                 <span className="bg-[#0A2EF5]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>1H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 08:00</div>
                         </div>
@@ -365,7 +368,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">李四</div>
-                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>3H</span>
+                                 <span className="bg-[#0A2EF5]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>3H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 06:00</div>
                         </div>
@@ -378,7 +381,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                         <div className="flex-1 min-w-0">
                              <div className="flex justify-between items-center mb-0.5">
                                  <div className="font-bold text-slate-800 text-sm">王五</div>
-                                 <span className="bg-[#142C73]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>0.5H</span>
+                                 <span className="bg-[#0A2EF5]/10 text-[10px] font-bold px-1.5 py-0.5 rounded" style={{ color: BRAND_BLUE }}>0.5H</span>
                              </div>
                              <div className="text-xs text-slate-500 transform origin-left">2025/12/4 08:30</div>
                         </div>
@@ -390,7 +393,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
          {/* 3. User Profile Footer */}
          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 bg-[#142C73]/10 rounded-full flex items-center justify-center shadow-sm" style={{ color: BRAND_BLUE }}>
+            <div className="w-10 h-10 bg-[#0A2EF5]/10 rounded-full flex items-center justify-center shadow-sm" style={{ color: BRAND_BLUE }}>
                 <UserCircle size={22} />
             </div>
             <div className="flex-1 min-w-0">
@@ -500,7 +503,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                             <div className="flex items-center gap-2 border-l-4 border-lime-500 pl-2.5 h-5">
                                 <span className="font-bold text-slate-800 text-base">当前工作单元</span>
                             </div>
-                            <button className="bg-[#142C73]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#142C73]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
+                            <button className="bg-[#0A2EF5]/5 text-xs font-bold px-3 py-1 rounded hover:bg-[#0A2EF5]/10 transition-colors" style={{ color: BRAND_BLUE }}>切换</button>
                          </div>
                          <div className="space-y-3 flex-1">
                              <div className="flex flex-col gap-1.5">
@@ -545,13 +548,13 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
 // --- Sub-components ---
 
-// Updated default color to Carrier Blue (#142C73)
+// Updated default color to Carrier Blue (#0A2EF5)
 const NavButton: React.FC<{ 
     label: string; 
-    icon: React.ReactNode;
+    icon: React.ReactNode; 
     bgColor?: string;
     onClick?: () => void;
-}> = ({ label, icon, bgColor = "bg-[#142C73] hover:bg-[#0f2259]", onClick }) => (
+}> = ({ label, icon, bgColor = "bg-[#0A2EF5] hover:bg-[#0621b5]", onClick }) => (
     <button 
         onClick={onClick}
         className={`${bgColor} text-white font-extrabold text-lg rounded-lg flex items-center justify-center gap-2.5 relative transition-all shadow-sm active:scale-95 hover:shadow-md hover:-translate-y-0.5 whitespace-nowrap overflow-hidden`}
@@ -582,7 +585,7 @@ const TabButton: React.FC<{
                 : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
             }
         `}
-        style={isActive ? { color: '#142C73', borderColor: '#142C73' } : {}}
+        style={isActive ? { color: '#0A2EF5', borderColor: '#0A2EF5' } : {}}
     >
         {label}
     </button>

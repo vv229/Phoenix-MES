@@ -29,7 +29,7 @@ export const SelectStationModal: React.FC<SelectStationModalProps> = ({ isOpen, 
                 <div 
                     key={item}
                     onClick={() => onSelect(item)}
-                    className={`px-6 py-4 border-b border-slate-100 cursor-pointer text-lg transition-colors ${selected === item ? 'bg-blue-50 text-[#142C73] font-bold border-l-4 border-l-[#142C73]' : 'text-slate-700 hover:bg-slate-50'}`}
+                    className={`px-6 py-4 border-b border-slate-100 cursor-pointer text-lg transition-colors ${selected === item ? 'bg-blue-50 text-[#0A2EF5] font-bold border-l-4 border-l-[#0A2EF5]' : 'text-slate-700 hover:bg-slate-50'}`}
                 >
                     {item}
                 </div>
@@ -59,17 +59,17 @@ export const SelectStationModal: React.FC<SelectStationModalProps> = ({ isOpen, 
                 <div className="flex-1 overflow-hidden p-6 grid grid-cols-3 gap-4">
                     {/* Column 1 */}
                     <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
-                        <div className="bg-[#142C73] text-white font-extrabold text-xl text-center py-4 tracking-wider">生产线</div>
+                        <div className="bg-[#0A2EF5] text-white font-extrabold text-xl text-center py-4 tracking-wider">生产线</div>
                         {renderList(lines, selectedLine, setSelectedLine)}
                     </div>
                     {/* Column 2 */}
                     <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
-                        <div className="bg-[#142C73] text-white font-extrabold text-xl text-center py-4 tracking-wider">工序</div>
+                        <div className="bg-[#0A2EF5] text-white font-extrabold text-xl text-center py-4 tracking-wider">工序</div>
                         {renderList(processes, selectedProcess, setSelectedProcess)}
                     </div>
                     {/* Column 3 */}
                     <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
-                        <div className="bg-[#142C73] text-white font-extrabold text-xl text-center py-4 tracking-wider">工位</div>
+                        <div className="bg-[#0A2EF5] text-white font-extrabold text-xl text-center py-4 tracking-wider">工位</div>
                         {renderList(stations, selectedStation, setSelectedStation)}
                     </div>
                 </div>
@@ -84,7 +84,7 @@ export const SelectStationModal: React.FC<SelectStationModalProps> = ({ isOpen, 
                     </button>
                     <button 
                         onClick={onConfirm}
-                        className="px-10 py-3 bg-[#142C73] hover:bg-[#0f2259] text-white rounded text-lg font-bold shadow-md transition-all active:scale-95"
+                        className="px-10 py-3 bg-[#0A2EF5] hover:bg-[#0621b5] text-white rounded text-lg font-bold shadow-md transition-all active:scale-95"
                     >
                         确定
                     </button>
