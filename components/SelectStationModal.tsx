@@ -29,7 +29,7 @@ export const SelectStationModal: React.FC<SelectStationModalProps> = ({ isOpen, 
                 <div 
                     key={item}
                     onClick={() => onSelect(item)}
-                    className={`px-4 py-2 border-b border-slate-100 cursor-pointer text-sm ${selected === item ? 'bg-slate-200 text-slate-900 font-medium' : 'text-slate-700 hover:bg-slate-50'}`}
+                    className={`px-6 py-4 border-b border-slate-100 cursor-pointer text-lg transition-colors ${selected === item ? 'bg-blue-50 text-[#102a4e] font-bold border-l-4 border-l-[#102a4e]' : 'text-slate-700 hover:bg-slate-50'}`}
                 >
                     {item}
                 </div>
@@ -38,49 +38,53 @@ export const SelectStationModal: React.FC<SelectStationModalProps> = ({ isOpen, 
     );
 
     return (
-        <div className="fixed inset-0 bg-slate-200/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white w-full max-w-4xl shadow-2xl rounded border border-slate-300 flex flex-col max-h-[80vh]">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            {/* Enlarged Modal Container */}
+            <div className="bg-white w-full max-w-7xl h-[85vh] shadow-2xl rounded-lg border border-slate-300 flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between p-2 border-b border-slate-200 bg-white">
-                    <div className="bg-slate-100 p-1 rounded border border-slate-200">
-                        <CarrierLogo className="h-6 w-auto text-blue-900" />
+                <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-white shrink-0">
+                    <div className="flex items-center gap-4">
+                         <div className="bg-slate-100 p-2 rounded border border-slate-200">
+                            <CarrierLogo className="h-8 w-auto text-blue-900" />
+                        </div>
+                        <div className="font-bold text-2xl text-slate-800">选择工位</div>
                     </div>
-                    <div className="font-bold text-lg text-slate-800">选择工位</div>
-                    <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded">
-                        <X size={24} className="text-slate-500" />
+                   
+                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                        <X size={32} className="text-slate-500" />
                     </button>
                 </div>
 
                 {/* Body - 3 Columns */}
-                <div className="flex-1 overflow-hidden p-4 grid grid-cols-3 gap-2">
+                <div className="flex-1 overflow-hidden p-6 grid grid-cols-3 gap-4">
                     {/* Column 1 */}
-                    <div className="flex flex-col border border-slate-400">
-                        <div className="bg-[#9ca3af] text-white font-bold text-center py-2">生产线</div>
+                    <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
+                        <div className="bg-[#102a4e] text-white font-extrabold text-xl text-center py-4 tracking-wider">生产线</div>
                         {renderList(lines, selectedLine, setSelectedLine)}
                     </div>
                     {/* Column 2 */}
-                    <div className="flex flex-col border border-slate-400">
-                        <div className="bg-[#9ca3af] text-white font-bold text-center py-2">工序</div>
+                    <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
+                        <div className="bg-[#102a4e] text-white font-extrabold text-xl text-center py-4 tracking-wider">工序</div>
                         {renderList(processes, selectedProcess, setSelectedProcess)}
                     </div>
                     {/* Column 3 */}
-                    <div className="flex flex-col border border-slate-400">
-                        <div className="bg-[#9ca3af] text-white font-bold text-center py-2">工位</div>
+                    <div className="flex flex-col border border-slate-300 rounded-md overflow-hidden shadow-sm">
+                        <div className="bg-[#102a4e] text-white font-extrabold text-xl text-center py-4 tracking-wider">工位</div>
                         {renderList(stations, selectedStation, setSelectedStation)}
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-slate-200 flex justify-end gap-3 bg-white">
+                <div className="p-6 border-t border-slate-200 flex justify-end gap-4 bg-white shrink-0">
                     <button 
                         onClick={onClose}
-                        className="px-6 py-2 border border-slate-300 rounded text-slate-700 hover:bg-slate-50 font-medium bg-white shadow-sm"
+                        className="px-10 py-3 border border-slate-300 rounded text-lg text-slate-700 hover:bg-slate-50 font-bold bg-white shadow-sm transition-all active:scale-95"
                     >
                         取消
                     </button>
                     <button 
                         onClick={onConfirm}
-                        className="px-6 py-2 bg-[#0ea5e9] hover:bg-[#0284c7] text-white rounded font-medium shadow-sm"
+                        className="px-10 py-3 bg-[#102a4e] hover:bg-[#0c203b] text-white rounded text-lg font-bold shadow-md transition-all active:scale-95"
                     >
                         确定
                     </button>
