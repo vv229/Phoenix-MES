@@ -139,7 +139,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                     <h2 className="text-2xl font-bold text-slate-900 mb-6 border-l-4 border-blue-600 pl-4">生产管理</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                         <NavCard 
-                            title="过站采集" 
+                            title="生产采集" 
                             icon={<Factory size={32} />} 
                             onClick={handleStationCollectionClick}
                             color="text-blue-600"
