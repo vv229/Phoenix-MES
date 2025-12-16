@@ -474,9 +474,16 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                   
                   {/* Process Materials */}
                   <div className="flex-1 bg-white rounded-lg border border-slate-200 shadow-sm flex flex-col overflow-hidden max-h-[50%]">
-                      <div className="h-10 border-b border-slate-200 px-3 flex items-center shrink-0 bg-slate-50">
-                          <div className="w-1 h-4 bg-lime-600 mr-2 rounded-full"></div>
-                          <span className="font-bold text-slate-800 text-sm">工序物料</span>
+                      <div className="h-10 border-b border-slate-200 px-3 flex items-center justify-between shrink-0 bg-slate-50">
+                          <div className="flex items-center">
+                            <div className="w-1 h-4 bg-lime-600 mr-2 rounded-full"></div>
+                            <span className="font-bold text-slate-800 text-sm">工序物料</span>
+                          </div>
+                          <div className="flex rounded overflow-hidden border border-slate-300 shadow-sm scale-90 origin-right">
+                              <button className="px-3 py-0.5 text-xs font-bold bg-[#7db828] text-white">已扫</button>
+                              <div className="w-px bg-slate-300"></div>
+                              <button className="px-3 py-0.5 text-xs font-bold bg-white text-slate-500 hover:bg-slate-50">未扫</button>
+                          </div>
                       </div>
                       <div className="flex-1 overflow-auto">
                           <table className="w-full text-xs text-left">
@@ -489,16 +496,29 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                                   </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-100">
-                                  {MOCK_BOM.map(item => (
-                                      <tr key={item.id} className="hover:bg-slate-50">
-                                          <td className="px-2 py-2 text-center text-slate-500 font-medium">{item.seq}</td>
-                                          <td className="px-2 py-2 font-bold text-slate-700">{item.materialCode}</td>
-                                          <td className="px-2 py-2 text-center text-slate-900 font-bold">{item.qty}</td>
-                                          <td className="px-2 py-2 text-center text-slate-500">{item.isKeyPart ? '是' : '-'}</td>
-                                      </tr>
-                                  ))}
-                                  <tr className="hover:bg-slate-50"><td className="px-2 py-2 text-center text-slate-500">5</td><td className="px-2 py-2 text-slate-700 font-bold">2007750347</td><td className="px-2 py-2 text-center text-slate-900 font-bold">1</td><td className="px-2 py-2 text-center text-slate-500">-</td></tr>
-                                  <tr className="hover:bg-slate-50"><td className="px-2 py-2 text-center text-slate-500">6</td><td className="px-2 py-2 text-slate-700 font-bold">2007750348</td><td className="px-2 py-2 text-center text-slate-900 font-bold">2</td><td className="px-2 py-2 text-center text-slate-500">-</td></tr>
+                                  {MOCK_BOM.map((item, index) => {
+                                      const isScanned = index < 2;
+                                      return (
+                                          <tr key={item.id} className="hover:bg-slate-50">
+                                              <td className="px-2 py-2 text-center text-slate-500 font-medium">{item.seq}</td>
+                                              <td className={`px-2 py-2 font-bold ${isScanned ? 'text-[#7db828]' : 'text-slate-400'}`}>{item.materialCode}</td>
+                                              <td className="px-2 py-2 text-center text-slate-900 font-bold">{item.qty}</td>
+                                              <td className="px-2 py-2 text-center text-slate-500">{item.isKeyPart ? '是' : '-'}</td>
+                                          </tr>
+                                      );
+                                  })}
+                                  <tr className="hover:bg-slate-50">
+                                      <td className="px-2 py-2 text-center text-slate-500">5</td>
+                                      <td className="px-2 py-2 text-slate-400 font-bold">2007750347</td>
+                                      <td className="px-2 py-2 text-center text-slate-900 font-bold">1</td>
+                                      <td className="px-2 py-2 text-center text-slate-500">-</td>
+                                  </tr>
+                                  <tr className="hover:bg-slate-50">
+                                      <td className="px-2 py-2 text-center text-slate-500">6</td>
+                                      <td className="px-2 py-2 text-slate-400 font-bold">2007750348</td>
+                                      <td className="px-2 py-2 text-center text-slate-900 font-bold">2</td>
+                                      <td className="px-2 py-2 text-center text-slate-500">-</td>
+                                  </tr>
                               </tbody>
                           </table>
                       </div>
