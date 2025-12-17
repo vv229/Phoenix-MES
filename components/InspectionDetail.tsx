@@ -17,14 +17,17 @@ import {
   Activity,
   Layers,
   ChevronRight,
-  ClipboardList
+  ClipboardList,
+  AlertCircle
 } from 'lucide-react';
 import { Task, InspectionResult } from '../types';
 import { CarrierLogo } from './CarrierLogo';
+import { DefectSelectionModal, SelectedDefect } from './DefectSelectionModal';
 
 interface InspectionDetailProps {
   task: Task;
   onBack: () => void;
+  moduleTitle: string; // New prop for dynamic title
 }
 
 const BRAND_BLUE = '#0A2EF5';
@@ -50,7 +53,8 @@ interface InspectionItemState {
   upperLimit?: number;
   vals?: string[];
   allowPhoto: boolean; 
-  photos: Photo[];     
+  photos: Photo[];
+  defects?: SelectedDefect[]; // New field for defects
 }
 
 // --- MOCK DATA ---
@@ -76,13 +80,15 @@ const FINAL_ITEMS: InspectionItemState[] = [
       id: 4, name: '蒸发器与冷凝器连接', type: '定量', kc: '是', kpc: '是', 
       standard: 'M30:1084±34NM', result: 'NG', 
       isQuantitative: true, sampleCount: 3, lowerLimit: 1050, upperLimit: 1118, vals: ['1004', '1005', '1002'], 
-      allowPhoto: true, photos: [{ id: 'p1', url: '#', timestamp: '5:12:12 PM' }, { id: 'p2', url: '#', timestamp: '5:12:13 PM' }] 
+      allowPhoto: true, photos: [{ id: 'p1', url: '#', timestamp: '5:12:12 PM' }, { id: 'p2', url: '#', timestamp: '5:12:13 PM' }],
+      defects: [{ id: 'M001', code: 'M001', name: '螺钉松动', category: '装配类', count: 1 }] 
     },
     { 
       id: 5, name: '蒸发器筒身端', type: '定量', kc: '否', kpc: '是', 
       standard: 'M20: [285±34 N.M.]', result: 'NG', 
       isQuantitative: true, sampleCount: 1, lowerLimit: 251, upperLimit: 319, vals: ['200'], 
-      allowPhoto: true, photos: []
+      allowPhoto: true, photos: [],
+      defects: [{ id: 'P005', code: 'P005', name: '焊漏', category: '性能类', count: 1 }]
     },
 ];
 
@@ -115,7 +121,7 @@ const PROCESS_ITEMS_DETAIL: InspectionItemState[] = [
 ];
 
 
-export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack }) => {
+export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack, moduleTitle }) => {
   // Tabs & Navigation State
   const [activeTab, setActiveTab] = useState<'FINAL' | 'PROCESS'>('FINAL');
   const [selectedProcessGroup, setSelectedProcessGroup] = useState<string | null>(null);
@@ -129,10 +135,14 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
   const [noteModal, setNoteModal] = useState<{ title: string; content: string } | null>(null);
   const [activeItemId, setActiveItemId] = useState<number | null>(null);
   const [expandedCards, setExpandedCards] = useState({ info: true }); // Removed wo and tech from expand state
+  
+  // Defect Modal State
+  const [defectModalState, setDefectModalState] = useState<{ isOpen: boolean; itemId: number | null }>({ isOpen: false, itemId: null });
 
   // Helpers
   const currentItems = activeTab === 'FINAL' ? finalItems : processItems;
   const activeItem = currentItems.find(i => i.id === activeItemId);
+  const defectTargetItem = currentItems.find(i => i.id === defectModalState.itemId);
 
   // --- Handlers ---
 
@@ -193,6 +203,39 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
     setModalMode('NONE');
     setActiveItemId(null);
   };
+  
+  const handleResultChange = (id: number, result: 'OK' | 'NG') => {
+      const updateFunc = activeTab === 'FINAL' ? setFinalItems : setProcessItems;
+      
+      if (result === 'NG') {
+          // Open Defect Modal
+          setDefectModalState({ isOpen: true, itemId: id });
+      } else {
+          // Directly set OK
+          updateFunc(prev => prev.map(item => {
+              if (item.id === id) {
+                  return { ...item, result: 'OK', defects: [] }; // Clear defects if OK
+              }
+              return item;
+          }));
+      }
+  };
+  
+  const handleDefectConfirm = (defects: SelectedDefect[]) => {
+      if (defectModalState.itemId === null) return;
+      
+      const updateFunc = activeTab === 'FINAL' ? setFinalItems : setProcessItems;
+      updateFunc(prev => prev.map(item => {
+          if (item.id === defectModalState.itemId) {
+              return { 
+                  ...item, 
+                  result: 'NG', 
+                  defects: defects 
+              };
+          }
+          return item;
+      }));
+  };
 
   // --- Render Components ---
 
@@ -209,6 +252,15 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
   return (
     <div className="h-screen w-full bg-slate-100 flex font-sans overflow-hidden text-slate-800 relative">
       
+      {/* --- Defect Selection Modal --- */}
+      <DefectSelectionModal 
+          isOpen={defectModalState.isOpen}
+          onClose={() => setDefectModalState({ isOpen: false, itemId: null })}
+          onConfirm={handleDefectConfirm}
+          itemName={defectTargetItem?.name}
+          initialDefects={defectTargetItem?.defects}
+      />
+
       {/* --- NOTE DETAILS MODAL (2/3 Screen, Centered) --- */}
       {noteModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-200">
@@ -416,7 +468,7 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
               </button>
               {/* Updated font size to text-2xl */}
               <span className="text-slate-800 font-bold text-2xl tracking-wide">
-                  成品检验 – {task.sn}
+                  {moduleTitle} – {task.sn}
               </span>
           </div>
           <button onClick={onBack} className="p-2.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
@@ -523,6 +575,12 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
                                     {index + 1}
                                 </div>
                                 <span className="font-bold text-slate-800 text-lg truncate">{item.name}</span>
+                                {item.defects && item.defects.length > 0 && (
+                                    <div className="flex items-center gap-1 bg-red-50 border border-red-100 px-2 py-0.5 rounded-full">
+                                        <Tag size={12} className="text-red-500"/>
+                                        <span className="text-xs font-bold text-red-600">{item.defects.length} 项缺陷</span>
+                                    </div>
+                                )}
                             </div>
                             
                             <div className="flex items-center gap-3 shrink-0">
@@ -551,9 +609,19 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
                                 </button>
 
                                 <div className="flex rounded-md overflow-hidden border border-slate-300 shadow-sm h-9">
-                                    <button className={`px-4 text-sm font-bold transition-all flex items-center ${item.result === 'OK' ? 'bg-[#7db828] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}>合格</button>
+                                    <button 
+                                        onClick={() => handleResultChange(item.id, 'OK')}
+                                        className={`px-4 text-sm font-bold transition-all flex items-center ${item.result === 'OK' ? 'bg-[#7db828] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+                                    >
+                                        合格
+                                    </button>
                                     <div className="w-px bg-slate-300"></div>
-                                    <button className={`px-4 text-sm font-bold transition-all flex items-center ${item.result === 'NG' ? 'bg-[#cc0000] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}>不合格</button>
+                                    <button 
+                                        onClick={() => handleResultChange(item.id, 'NG')}
+                                        className={`px-4 text-sm font-bold transition-all flex items-center ${item.result === 'NG' ? 'bg-[#cc0000] text-white' : 'bg-white text-slate-400 hover:bg-slate-50'}`}
+                                    >
+                                        不合格
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -583,6 +651,23 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
                                                     />
                                                 ))}
                                             </div>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Display Defects Inline */}
+                                {item.defects && item.defects.length > 0 && (
+                                    <div className="bg-red-50 border border-red-100 rounded-lg p-3">
+                                        <div className="text-xs font-bold text-red-600 mb-2 flex items-center gap-1">
+                                            <AlertCircle size={14}/> 已录入缺陷:
+                                        </div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {item.defects.map(d => (
+                                                <div key={d.id} className="bg-white border border-red-200 text-red-700 text-xs px-2 py-1 rounded flex items-center gap-1.5 font-medium shadow-sm">
+                                                    <span>{d.name}</span>
+                                                    {d.count > 1 && <span className="bg-red-100 px-1 rounded-full text-[10px]">x{d.count}</span>}
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 )}

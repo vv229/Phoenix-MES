@@ -10,6 +10,8 @@ export enum InspectionResult {
   NONE = 'NONE'        // 未出结果
 }
 
+export type InspectionModule = 'FQC' | 'PROCESS' | 'COMPLETION';
+
 export interface Task {
   id: string;          // 检验单号
   workOrder: string;   // 工单
@@ -21,6 +23,7 @@ export interface Task {
   line: string;        // 产线 (Line Body)
   inspector: string;   // 检验员 (Kept in data model, but removed from card view per request)
   sn: string;          // SN 标签 (New field)
+  processName?: string; // 工序名称 (New field for Process Inspection)
   status: InspectionStatus;
   result: InspectionResult;
   createTime: string;  // 创建时间
@@ -35,7 +38,7 @@ export interface Task {
 export interface FilterState {
   status: InspectionStatus | 'ALL';
   search: string;
-  workshop: string | 'ALL';
+  line: string | 'ALL';
 }
 
 // --- Detail View Types ---

@@ -9,14 +9,16 @@ import {
   UserCircle,
   MoreHorizontal,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  FileCheck
 } from 'lucide-react';
 import { CarrierLogo } from './CarrierLogo';
 import { SelectStationModal } from './SelectStationModal';
 import { ClockInModal } from './ClockInModal';
+import { InspectionModule } from '../types';
 
 interface NavigationHomeProps {
-  onNavigate: (view: 'STATION_COLLECTION' | 'FQC_LIST') => void;
+  onNavigate: (view: 'STATION_COLLECTION' | 'FQC_LIST', module?: InspectionModule) => void;
   onLogout: () => void;
 }
 
@@ -159,18 +161,20 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         <NavCard 
                             title="过程专检" 
                             icon={<ClipboardCheck size={32} />} 
-                            color="text-slate-500"
+                            onClick={() => onNavigate('FQC_LIST', 'PROCESS')}
+                            color="text-indigo-600"
+                        />
+                         <NavCard 
+                            title="完工检验" 
+                            icon={<FileCheck size={32} />} 
+                            onClick={() => onNavigate('FQC_LIST', 'COMPLETION')}
+                            color="text-purple-600"
                         />
                         <NavCard 
                             title="成品检验" 
                             icon={<Box size={32} />} 
-                            onClick={() => onNavigate('FQC_LIST')}
+                            onClick={() => onNavigate('FQC_LIST', 'FQC')}
                             color="text-green-600"
-                        />
-                        <NavCard 
-                            title="入库检验" 
-                            icon={<Truck size={32} />} 
-                            color="text-slate-500"
                         />
                     </div>
                 </div>

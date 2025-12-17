@@ -8,10 +8,11 @@ import {
   Bell,
   UserCircle,
   ChevronLeft,
-  Home
+  Home,
+  Layers
 } from 'lucide-react';
-import { MOCK_TASKS, WORKSHOPS } from './constants';
-import { InspectionStatus, FilterState, Task } from './types';
+import { MOCK_TASKS } from './constants';
+import { InspectionStatus, FilterState, Task, InspectionModule } from './types';
 import { TaskCard } from './components/TaskCard';
 import { StatsDashboard } from './components/StatsDashboard';
 import { InspectionDetail } from './components/InspectionDetail';
@@ -27,11 +28,12 @@ const BRAND_BLUE = '#0A2EF5';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('LOGIN');
+  const [activeModule, setActiveModule] = useState<InspectionModule>('FQC'); // Track which module is active
   const [tasks] = useState(MOCK_TASKS);
   const [filter, setFilter] = useState<FilterState>({
     status: 'ALL',
     search: '',
-    workshop: 'ALL'
+    line: 'ALL'
   });
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
@@ -44,17 +46,38 @@ const App: React.FC = () => {
         task.workOrder.toLowerCase().includes(filter.search.toLowerCase());
       
       const matchesStatus = filter.status === 'ALL' || task.status === filter.status;
-      const matchesWorkshop = filter.workshop === 'ALL' || task.workshop === filter.workshop;
+      const matchesLine = filter.line === 'ALL' || task.line === filter.line;
 
-      return matchesSearch && matchesStatus && matchesWorkshop;
+      return matchesSearch && matchesStatus && matchesLine;
     });
   }, [tasks, filter]);
+
+  // Unique Lines for Filter
+  const uniqueLines = useMemo(() => {
+    return Array.from(new Set(tasks.map(t => t.line))).sort();
+  }, [tasks]);
 
   // Tab Counts
   const pendingCount = tasks.filter(t => t.status === InspectionStatus.PENDING).length;
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
+  };
+
+  const handleNavigate = (view: ViewState, module?: InspectionModule) => {
+    if (module) {
+        setActiveModule(module);
+    }
+    setCurrentView(view);
+  };
+
+  const getModuleTitle = () => {
+      switch (activeModule) {
+          case 'PROCESS': return '过程专检';
+          case 'COMPLETION': return '完工检验';
+          case 'FQC': return '成品检验';
+          default: return '检验任务';
+      }
   };
 
   // --- ROUTER LOGIC ---
@@ -68,7 +91,7 @@ const App: React.FC = () => {
   if (currentView === 'HOME') {
       return (
         <NavigationHome 
-            onNavigate={(view) => setCurrentView(view)} 
+            onNavigate={handleNavigate} 
             onLogout={() => setCurrentView('LOGIN')}
         />
       );
@@ -86,7 +109,7 @@ const App: React.FC = () => {
 
   // 3. FQC Detail View (Nested in List)
   if (selectedTask) {
-      return <InspectionDetail task={selectedTask} onBack={() => setSelectedTask(null)} />;
+      return <InspectionDetail task={selectedTask} moduleTitle={getModuleTitle()} onBack={() => setSelectedTask(null)} />;
   }
 
   // 4. FQC List View (Redesigned Layout)
@@ -117,31 +140,34 @@ const App: React.FC = () => {
               <StatsDashboard tasks={filteredTasks.length === tasks.length ? tasks : filteredTasks} />
            </div>
 
-           {/* Workshop Filters */}
+           {/* Line Filters */}
            <div>
               <div className="flex items-center gap-2 mb-3 px-1">
                   <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
                   <h2 className="text-sm font-bold text-slate-600 flex items-center gap-2">
-                     车间筛选
+                     线体筛选
                   </h2>
               </div>
               
               <div className="space-y-2 bg-white rounded-xl border border-slate-200 p-2 shadow-sm">
                  <button
-                    onClick={() => setFilter(prev => ({...prev, workshop: 'ALL'}))}
-                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all font-medium ${filter.workshop === 'ALL' ? 'bg-slate-100 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}
+                    onClick={() => setFilter(prev => ({...prev, line: 'ALL'}))}
+                    className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all font-medium ${filter.line === 'ALL' ? 'bg-slate-100 text-blue-700 shadow-sm' : 'text-slate-600 hover:bg-slate-50'}`}
                  >
-                    全部车间
+                    全部线体
                  </button>
-                 {WORKSHOPS.map(ws => (
+                 {uniqueLines.map(line => (
                     <button
-                        key={ws}
-                        onClick={() => setFilter(prev => ({...prev, workshop: ws}))}
-                        className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex justify-between items-center font-medium ${filter.workshop === ws ? 'bg-blue-50 text-blue-700 shadow-sm ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50'}`}
+                        key={line}
+                        onClick={() => setFilter(prev => ({...prev, line: line}))}
+                        className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex justify-between items-center font-medium ${filter.line === line ? 'bg-blue-50 text-blue-700 shadow-sm ring-1 ring-blue-100' : 'text-slate-600 hover:bg-slate-50'}`}
                     >
-                        {ws}
-                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${filter.workshop === ws ? 'bg-white text-blue-600 shadow-sm' : 'bg-slate-100 text-slate-400'}`}>
-                           {tasks.filter(t => t.workshop === ws && (filter.status === 'ALL' || t.status === filter.status)).length}
+                        <div className="flex items-center gap-2">
+                            <Layers size={14} className="opacity-50" />
+                            <span>线体 {line}</span>
+                        </div>
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${filter.line === line ? 'bg-white text-blue-600 shadow-sm' : 'bg-slate-100 text-slate-400'}`}>
+                           {tasks.filter(t => t.line === line && (filter.status === 'ALL' || t.status === filter.status)).length}
                         </span>
                     </button>
                  ))}
@@ -170,7 +196,7 @@ const App: React.FC = () => {
                  <button onClick={() => setCurrentView('HOME')} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
                     <ChevronLeft size={26} strokeWidth={2.5} />
                 </button>
-                <span className="text-slate-800 font-bold text-2xl tracking-wide">成品检验</span>
+                <span className="text-slate-800 font-bold text-2xl tracking-wide">{getModuleTitle()}</span>
             </div>
 
             <div className="flex items-center gap-2">
