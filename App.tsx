@@ -254,6 +254,7 @@ const App: React.FC = () => {
                         key={task.id} 
                         task={task} 
                         onClick={() => handleTaskClick(task)}
+                        showProcess={activeModule === 'PROCESS'}
                      />
                   ))}
                </div>

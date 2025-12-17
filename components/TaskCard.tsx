@@ -4,9 +4,10 @@ import { Task, InspectionStatus, InspectionResult } from '../types';
 interface TaskCardProps {
   task: Task;
   onClick: () => void;
+  showProcess?: boolean; // Control visibility of process field
 }
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
+export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick, showProcess = false }) => {
   const getStatusColor = (status: InspectionStatus) => {
     switch (status) {
       case InspectionStatus.PENDING: return 'bg-blue-50 text-blue-700 border-blue-200';
@@ -70,8 +71,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
             <span className="font-bold text-slate-700 truncate">{task.line}</span>
         </div>
 
-        {/* Process (New Field) - displayed if exists */}
-        {task.processName && (
+        {/* Process (Conditional Field) */}
+        {showProcess && task.processName && (
              <div className="flex flex-col gap-0.5">
                 <span className="text-slate-400 font-medium">工序</span>
                 <span className="font-bold text-slate-700 truncate">{task.processName}</span>

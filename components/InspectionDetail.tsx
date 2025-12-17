@@ -92,12 +92,13 @@ const FINAL_ITEMS: InspectionItemState[] = [
     },
 ];
 
-// 2. Process Inspection Groups (New)
+// 2. Process Inspection Groups (Updated with Process Names)
 const PROCESS_GROUPS = [
-    { id: 'g1', name: '机架外观', status: 'PENDING', total: 5, completed: 0, items: [] },
-    { id: 'g2', name: '电气柜外观', status: 'IN_PROGRESS', total: 3, completed: 3, items: [] },
-    { id: 'g3', name: '供收料模块外观', status: 'PENDING', total: 0, completed: 0, items: [] },
-    { id: 'g4', name: '尺寸项目', status: 'PENDING', total: 3, completed: 0, items: [] },
+    { id: 'g1', name: '大件装配', status: 'PENDING', total: 5, completed: 0, items: [] },
+    { id: 'g2', name: '管配', status: 'IN_PROGRESS', total: 3, completed: 3, items: [] },
+    { id: 'g3', name: '钎焊', status: 'PENDING', total: 4, completed: 0, items: [] },
+    { id: 'g4', name: 'V盘预装', status: 'PENDING', total: 2, completed: 0, items: [] },
+    { id: 'g5', name: 'V盘安装', status: 'PENDING', total: 3, completed: 0, items: [] },
 ];
 
 // 3. Mock Items for a Process Group (Drill Down)
@@ -500,18 +501,20 @@ export const InspectionDetail: React.FC<InspectionDetailProps> = ({ task, onBack
             </div>
         </div>
 
-        {/* 3. Action Toolbar */}
-        <div className="bg-white px-6 py-3 border-b border-slate-200 flex gap-3 shrink-0">
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
-              <Download size={18} /> 读取设备参数
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
-              <Save size={18} /> 保存
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
-              <Send size={18} /> 提交
-            </button>
-        </div>
+        {/* 3. Action Toolbar - Only show if NOT in PROCESS tab */}
+        {activeTab !== 'PROCESS' && (
+            <div className="bg-white px-6 py-3 border-b border-slate-200 flex gap-3 shrink-0">
+                <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
+                <Download size={18} /> 读取设备参数
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
+                <Save size={18} /> 保存
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-md border border-slate-300 transition-colors shadow-sm active:scale-95">
+                <Send size={18} /> 提交
+                </button>
+            </div>
+        )}
 
         {/* 4. List Content (Conditional) */}
         <div className="flex-1 overflow-auto p-4 space-y-4">
