@@ -59,10 +59,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                 <div className="p-8">
                     {/* Header */}
                     <div className="flex justify-between items-start mb-8">
-                    <h2 className="text-2xl font-bold text-slate-900 font-serif tracking-wide">Log On</h2>
-                    <div className="w-10 h-10 bg-[#1e3a8a] rounded-sm flex items-center justify-center text-white font-serif italic font-bold text-xl shadow-sm border border-blue-800">
-                        Cx
-                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 font-serif tracking-wide">用户登入</h2>
+                    
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-4">
@@ -75,7 +73,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                                 </div>
                                 <input 
                                     type="text" 
-                                    placeholder="enter one user name" 
+                                    placeholder="请输入用户名" 
                                     className="flex-1 h-10 px-3 text-sm text-slate-700 focus:outline-none placeholder:text-slate-400"
                                     value={username}
                                     onChange={e => setUsername(e.target.value)}
@@ -91,7 +89,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                                 </div>
                                 <input 
                                     type="password" 
-                                    placeholder="Please input a password" 
+                                    placeholder="请输入密码" 
                                     className="flex-1 h-10 px-3 text-sm text-slate-700 focus:outline-none placeholder:text-slate-400"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
@@ -106,8 +104,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                                     <Globe size={18} />
                                 </div>
                                 <select className="flex-1 h-10 px-3 text-sm text-slate-700 focus:outline-none bg-white appearance-none cursor-pointer">
-                                    <option>English</option>
                                     <option>中文</option>
+                                    <option>English</option>
                                 </select>
                                 <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                         </div>
@@ -118,7 +116,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
                         type="submit"
                         className="w-full bg-[#a91e2c] hover:bg-[#8f1925] text-white font-medium py-2.5 rounded shadow-sm hover:shadow transition-all active:scale-[0.99] text-base mt-4"
                     >
-                        Log On
+                        用户登入
                     </button>
                     </form>
                 </div>
