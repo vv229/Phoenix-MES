@@ -299,13 +299,13 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
           </header>
 
           <div className="px-3 py-2 grid grid-cols-7 gap-2 shrink-0 bg-white border-b border-slate-200 shadow-sm">
-                <NavButton label="点检" icon={<ClipboardList size={18} />} onClick={() => setIsPreProductionOpen(true)} bgColor="bg-red-600 hover:bg-red-700" />
-                <NavButton label="叫料" icon={<Megaphone size={18} />} />
-                <NavButton label="误工记录" icon={<Timer size={18} />} />
-                <NavButton label="在线维修" icon={<Wrench size={18} />} />
-                <NavButton label="作业指导书" icon={<BookOpen size={18} />} onClick={() => setIsEsopOpen(true)} />
-                <NavButton label="ECN变更" icon={<FileDiff size={18} />} bgColor="bg-red-600 hover:bg-red-700" />
-                <NavButton label="物料接收" icon={<Inbox size={18} />} />
+                <NavButton label="点检"  onClick={() => setIsPreProductionOpen(true)} bgColor="bg-red-600 hover:bg-red-700" />
+                <NavButton label="叫料" />
+                <NavButton label="误工记录"  />
+                <NavButton label="在线维修" />
+                <NavButton label="作业指导书"  onClick={() => setIsEsopOpen(true)} />
+                <NavButton label="ECN变更"  bgColor="bg-red-600 hover:bg-red-700" />
+                <NavButton label="物料接收" />
           </div>
 
           <div className="flex-1 overflow-hidden p-2 flex gap-2 bg-slate-100">
@@ -316,7 +316,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                             <div className="px-4 h-full flex items-center text-xs font-extrabold bg-white border-t-4 border-t-[#0A2EF5] text-[#0A2EF5] border-r border-slate-200 uppercase">检验项目</div>
                         </div>
                         <div className="flex items-center gap-3 w-64">
-                             <span className="text-[10px] font-black text-slate-700 whitespace-nowrap">完成进度: <span className="text-xs font-black text-blue-700">66%</span></span>
+                             <span className="text-[10px] font-black text-slate-700 whitespace-nowrap">完成进度（10/23）: <span className="text-xs font-black text-blue-700">66%</span></span>
                              <div className="flex-1 h-2.5 bg-slate-200 rounded-full overflow-hidden shadow-inner border border-slate-100">
                                  <div className="h-full w-[66%] bg-[#0A2EF5] rounded-full"></div>
                              </div>
@@ -484,9 +484,9 @@ const CircularTimer: React.FC<{ mins: string; time: string; progress: number; is
     );
 };
 
-const NavButton: React.FC<{ label: string; icon: React.ReactNode; bgColor?: string; onClick?: () => void; }> = ({ label, icon, bgColor = "bg-[#0A2EF5]", onClick }) => (
-    <button onClick={onClick} className={`${bgColor} text-white font-extrabold text-[10px] rounded flex flex-col items-center justify-center gap-1.5 py-2.5 shadow-sm active:scale-95 transition-all w-full`}>
-        {icon}<span>{label}</span>
+const NavButton: React.FC<{ label: string; icon?: React.ReactNode; bgColor?: string; onClick?: () => void; }> = ({ label, icon, bgColor = "bg-[#0A2EF5]", onClick }) => (
+    <button onClick={onClick} className={`${bgColor} text-white font-extrabold text-[20px] rounded flex flex-col items-center justify-center ${icon ?'gap-1.5':''}  py-2.5 shadow-sm active:scale-95 transition-all w-full`}>
+        {icon &&<div className="">{icon}</div>}<span>{label}</span>
     </button>
 );
 
