@@ -2,11 +2,6 @@
 import React, { useState } from 'react';
 import { X, ScanLine, ArrowRight, Truck, Box, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
-interface MaterialReceiveModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 interface TODetail {
   toNo: string;
   sourceLoc: string;
@@ -17,6 +12,11 @@ interface TODetail {
     batch: string;
     unit: string;
   }[];
+}
+
+interface MaterialReceiveModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const MOCK_TO: TODetail = {
@@ -70,7 +70,7 @@ export const MaterialReceiveModal: React.FC<MaterialReceiveModalProps> = ({ isOp
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-800">物料接收确认</h2>
-              <p className="text-xs text-slate-500 font-medium">SAP 原材料调拨流程 (TO -> LineSide)</p>
+              <p className="text-xs text-slate-500 font-medium">SAP 原材料调拨流程 (TO &rarr; LineSide)</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
