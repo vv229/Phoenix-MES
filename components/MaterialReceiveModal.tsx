@@ -70,7 +70,8 @@ export const MaterialReceiveModal: React.FC<MaterialReceiveModalProps> = ({ isOp
             </div>
             <div>
               <h2 className="text-xl font-bold text-slate-800">物料接收确认</h2>
-              <p className="text-xs text-slate-500 font-medium">SAP 原材料调拨流程 (TO &rarr; LineSide)</p>
+              {/* 使用 {'->'} 确保 JSX 解析器不会将 > 误认为标签结束符 */}
+              <p className="text-xs text-slate-500 font-medium">SAP 原材料调拨流程 (TO {'->'} LineSide)</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors">
@@ -143,8 +144,7 @@ export const MaterialReceiveModal: React.FC<MaterialReceiveModalProps> = ({ isOp
                             <span className="font-black text-blue-700">{item.qty}</span> <span className="text-xs text-slate-400">{item.unit}</span>
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
+                      </tbody>
                   </table>
                </div>
 

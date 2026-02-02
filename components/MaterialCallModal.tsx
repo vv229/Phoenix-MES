@@ -1,6 +1,6 @@
 
-import React, { useState, useMemo } from 'react';
-import { X, Search, ScanLine, ShoppingCart, Package, Grid, List, Check, Plus, Minus, Clock, CheckCircle2, AlertCircle, Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Search, ScanLine, ShoppingCart, Package, Grid, List, Check, Plus, Minus, AlertCircle, Send } from 'lucide-react';
 import { MOCK_BOM } from '../constants';
 
 interface MaterialCallModalProps {
