@@ -1,3 +1,4 @@
+
 export enum InspectionStatus {
   PENDING = 'PENDING',      // 待检
   IN_PROGRESS = 'IN_PROGRESS', // 检验中
@@ -10,29 +11,43 @@ export enum InspectionResult {
   NONE = 'NONE'        // 未出结果
 }
 
-export type InspectionModule = 'FQC' | 'PROCESS' | 'COMPLETION';
+export type InspectionModule = 'FQC' | 'PROCESS' | 'COMPLETION' | 'INCOMING';
 
 export interface Task {
-  id: string;          // 检验单号
-  workOrder: string;   // 工单
-  salesOrder: string;  // 销售单号
-  lineNo: string;      // 行号
+  id: string;          // 检验单号/ASN编号
+  workOrder?: string;   // 工单 (FQC/过程)
+  salesOrder?: string;  // 销售单号
+  lineNo: string;      // 行号 (ASN行号或工单行号)
   productCode: string; // 物料编码
-  productName: string; // 物料名称
-  unitModel: string;   // 机组型号
-  line: string;        // 产线 (Line Body)
-  inspector: string;   // 检验员 (Kept in data model, but removed from card view per request)
-  sn: string;          // SN 标签 (New field)
-  processName?: string; // 工序名称 (New field for Process Inspection)
+  productName: string; // 物料描述
+  unitModel?: string;   // 机组型号
+  line?: string;        // 产线
+  inspector: string;   // 检验员
+  sn: string;          // SN/序列号
+  processName?: string; // 工序名称
   status: InspectionStatus;
   result: InspectionResult;
   createTime: string;  // 创建时间
-  workshop: string;    // 车间
+  workshop?: string;    // 车间
   priority: 'High' | 'Normal' | 'Low';
   
-  // New Note Fields
-  woNotes?: string;    // 工单备注
-  techNotes?: string;  // 技术部备注
+  // FQC/过程 备注
+  woNotes?: string;    
+  techNotes?: string;
+
+  // 来料检验专用字段
+  asnNo?: string;
+  supplierCode?: string;
+  supplierName?: string;
+  deliveryAddr?: string;
+  deliveryDate?: string;
+  factory?: string;
+  warehouseKeeper?: string;
+  storageLocation?: string;
+  poNo?: string;
+  deliveryQty?: string;
+  unit?: string;
+  docStatus?: string;
 }
 
 export interface FilterState {

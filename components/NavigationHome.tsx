@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   Factory, 
@@ -10,7 +11,8 @@ import {
   MoreHorizontal,
   LogOut,
   ChevronDown,
-  FileCheck
+  FileCheck,
+  PackageSearch
 } from 'lucide-react';
 import { CarrierLogo } from './CarrierLogo';
 import { SelectStationModal } from './SelectStationModal';
@@ -72,7 +74,6 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
                     </button>
                     
-                    {/* User Profile & Dropdown Wrapper */}
                     <div className="relative">
                         <button 
                             className={`flex items-center gap-3 bg-white/10 px-3 py-1.5 rounded-lg cursor-pointer transition-all select-none border border-transparent ${isUserMenuOpen ? 'bg-white/20 border-white/10' : 'hover:bg-white/20'}`}
@@ -86,7 +87,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                             </div>
                             <div className="text-sm hidden md:block text-left">
                                 <div className="font-semibold text-white leading-tight">张工 (QC主管)</div>
-                                <div className="text-xs text-blue-200 leading-tight">质量管理部 - FQC组</div>
+                                <div className="text-xs text-blue-200 leading-tight">质量管理部 - IQC/FQC组</div>
                             </div>
                             <ChevronDown 
                                 size={14} 
@@ -94,20 +95,16 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                             />
                         </button>
 
-                        {/* Dropdown Menu */}
                         {isUserMenuOpen && (
                             <>
-                                {/* Backdrop to close when clicking outside */}
                                 <div 
                                     className="fixed inset-0 z-40 cursor-default" 
                                     onClick={() => setIsUserMenuOpen(false)}
                                 ></div>
-                                
-                                {/* Menu */}
                                 <div className="absolute top-full right-0 mt-2 w-60 bg-white rounded-lg shadow-2xl border border-slate-200 z-50 overflow-hidden origin-top-right animate-in fade-in zoom-in-95 duration-100">
                                     <div className="p-4 border-b border-slate-100 md:hidden bg-slate-50">
                                          <div className="font-semibold text-slate-800">张工 (QC主管)</div>
-                                         <div className="text-xs text-slate-500">质量管理部 - FQC组</div>
+                                         <div className="text-xs text-slate-500">质量管理部 - IQC/FQC组</div>
                                     </div>
                                     <div className="p-1">
                                         <button 
@@ -128,15 +125,10 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                             </>
                         )}
                     </div>
-
-                  
                 </div>
             </header>
 
-            {/* Content */}
             <main className="flex-1 p-8 overflow-y-auto max-w-7xl mx-auto w-full">
-                
-                {/* Section 1: Production Management */}
                 <div className="mb-10">
                     <h2 className="text-2xl font-bold text-slate-900 mb-6 border-l-4 border-blue-600 pl-4">生产管理</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
@@ -154,10 +146,15 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                     </div>
                 </div>
 
-                {/* Section 2: Quality Management */}
                 <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-6 border-l-4 border-blue-600 pl-4">质量管理</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                        <NavCard 
+                            title="来料检验" 
+                            icon={<PackageSearch size={32} />} 
+                            onClick={() => onNavigate('FQC_LIST', 'INCOMING')}
+                            color="text-blue-600"
+                        />
                         <NavCard 
                             title="过程专检" 
                             icon={<ClipboardCheck size={32} />} 
@@ -178,10 +175,8 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         />
                     </div>
                 </div>
-
             </main>
 
-            {/* Footer */}
             <footer className="h-10 bg-slate-900 text-slate-400 text-xs flex items-center justify-between px-6">
                 <span>2025/12/12 星期二 14:00:12</span>
                 <span>广州赛意信息科技股份有限公司</span>

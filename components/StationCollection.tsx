@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   ChevronLeft, 
@@ -28,6 +29,8 @@ import { PreProductionCheck } from './PreProductionCheck';
 import { PDFViewer } from './PDFViewer';
 import { CarrierLogo } from './CarrierLogo';
 import { DefectSelectionModal, SelectedDefect } from './DefectSelectionModal';
+import { MaterialCallModal } from './MaterialCallModal';
+import { MaterialReceiveModal } from './MaterialReceiveModal';
 
 interface StationCollectionProps {
   onBack: () => void;
@@ -81,6 +84,8 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
   const [isPreProductionOpen, setIsPreProductionOpen] = useState(false);
   const [isEsopOpen, setIsEsopOpen] = useState(false);
   const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
+  const [isMaterialCallOpen, setIsMaterialCallOpen] = useState(false);
+  const [isMaterialReceiveOpen, setIsMaterialReceiveOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'NONE' | 'CAMERA' | 'GALLERY'>('NONE');
   const [activeItemId, setActiveItemId] = useState<number | null>(null);
   const [defectModalState, setDefectModalState] = useState<{ isOpen: boolean; itemId: number | null }>({ isOpen: false, itemId: null });
@@ -123,6 +128,9 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
       <PreProductionCheck isOpen={isPreProductionOpen} onClose={() => setIsPreProductionOpen(false)} />
       <PDFViewer isOpen={isEsopOpen} onClose={() => setIsEsopOpen(false)} title="作业指导书 - AC-Cx.pdf" pdfUrl={PUBLIC_PDF_URL} />
       
+      <MaterialCallModal isOpen={isMaterialCallOpen} onClose={() => setIsMaterialCallOpen(false)} currentWO={activeWOId} />
+      <MaterialReceiveModal isOpen={isMaterialReceiveOpen} onClose={() => setIsMaterialReceiveOpen(false)} />
+
       <DefectSelectionModal 
           isOpen={defectModalState.isOpen}
           onClose={() => setDefectModalState({ isOpen: false, itemId: null })}
@@ -277,19 +285,19 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
               <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1.5">
                       <label className="text-xs font-bold text-slate-500 whitespace-nowrap">产线:</label>
-                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[80px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
+                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[80px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
                           <option>星火</option>
                       </select>
                   </div>
                   <div className="flex items-center gap-1.5">
                       <label className="text-xs font-bold text-slate-500 whitespace-nowrap">工序:</label>
-                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[100px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
+                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[100px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
                           <option>大件装配</option>
                       </select>
                   </div>
                   <div className="flex items-center gap-1.5">
                       <label className="text-xs font-bold text-slate-500 whitespace-nowrap">工位:</label>
-                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[120px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
+                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[120px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
                           <option>工位-大件装配</option>
                       </select>
                   </div>
@@ -300,12 +308,12 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
 
           <div className="px-3 py-2 grid grid-cols-7 gap-2 shrink-0 bg-white border-b border-slate-200 shadow-sm">
                 <NavButton label="点检"  onClick={() => setIsPreProductionOpen(true)} bgColor="bg-red-600 hover:bg-red-700" />
-                <NavButton label="叫料" />
+                <NavButton label="叫料" onClick={() => setIsMaterialCallOpen(true)} />
                 <NavButton label="误工记录"  />
                 <NavButton label="在线维修" />
                 <NavButton label="作业指导书"  onClick={() => setIsEsopOpen(true)} />
                 <NavButton label="ECN变更"  bgColor="bg-red-600 hover:bg-red-700" />
-                <NavButton label="物料接收" />
+                <NavButton label="物料接收" onClick={() => setIsMaterialReceiveOpen(true)} />
           </div>
 
           <div className="flex-1 overflow-hidden p-2 flex gap-2 bg-slate-100">

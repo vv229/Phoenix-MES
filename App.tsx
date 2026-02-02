@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { 
   ScanLine, 
@@ -37,28 +38,36 @@ const App: React.FC = () => {
   });
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  // Filter Logic
+  // Filter Logic (For IQC/Incoming, we might filter by warehouse or vendor, but for now reuse the logic)
   const filteredTasks = useMemo(() => {
     return tasks.filter(task => {
+      // Logic: If it's INCOMING, filter for tasks with asnNo. If it's others, filter for others.
+      const isIncoming = activeModule === 'INCOMING';
+      const taskIsIncoming = !!task.asnNo;
+      
+      if (isIncoming !== taskIsIncoming) return false;
+
       const matchesSearch = 
         task.id.toLowerCase().includes(filter.search.toLowerCase()) || 
         task.productName.includes(filter.search) || 
-        task.workOrder.toLowerCase().includes(filter.search.toLowerCase());
+        (task.workOrder && task.workOrder.toLowerCase().includes(filter.search.toLowerCase())) ||
+        (task.asnNo && task.asnNo.toLowerCase().includes(filter.search.toLowerCase())) ||
+        (task.supplierName && task.supplierName.includes(filter.search));
       
       const matchesStatus = filter.status === 'ALL' || task.status === filter.status;
-      const matchesLine = filter.line === 'ALL' || task.line === filter.line;
+      const matchesLine = isIncoming ? true : (filter.line === 'ALL' || task.line === filter.line);
 
       return matchesSearch && matchesStatus && matchesLine;
     });
-  }, [tasks, filter]);
+  }, [tasks, filter, activeModule]);
 
   // Unique Lines for Filter
   const uniqueLines = useMemo(() => {
-    return Array.from(new Set(tasks.map(t => t.line))).sort();
+    return Array.from(new Set(tasks.filter(t => !t.asnNo).map(t => t.line))).sort();
   }, [tasks]);
 
   // Tab Counts
-  const pendingCount = tasks.filter(t => t.status === InspectionStatus.PENDING).length;
+  const pendingCount = filteredTasks.filter(t => t.status === InspectionStatus.PENDING).length;
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
@@ -76,6 +85,7 @@ const App: React.FC = () => {
           case 'PROCESS': return '过程专检';
           case 'COMPLETION': return '完工检验';
           case 'FQC': return '成品检验';
+          case 'INCOMING': return '来料检验';
           default: return '检验任务';
       }
   };
@@ -107,19 +117,18 @@ const App: React.FC = () => {
       );
   }
 
-  // 3. FQC Detail View (Nested in List)
+  // 3. Detail View (Nested in List)
   if (selectedTask) {
-      return <InspectionDetail task={selectedTask} moduleTitle={getModuleTitle()} onBack={() => setSelectedTask(null)} />;
+      return <InspectionDetail task={selectedTask} activeModule={activeModule} moduleTitle={getModuleTitle()} onBack={() => setSelectedTask(null)} />;
   }
 
-  // 4. FQC List View (Redesigned Layout)
+  // 4. List View
   return (
     <div className="h-screen w-full bg-slate-100 flex font-sans overflow-hidden text-slate-800">
       
-      {/* 1. LEFT SIDEBAR (22%) - Matches StationCollection Style */}
+      {/* 1. LEFT SIDEBAR */}
       <aside className="w-[22%] min-w-[280px] max-w-[340px] bg-white border-r border-slate-200 flex flex-col shrink-0 z-20 shadow-lg">
         
-        {/* Sidebar Header */}
         <div className="h-16 flex items-center px-4 border-b border-slate-100 shrink-0 bg-slate-50">
            <div className="flex items-center gap-3 w-full">
               <span className="font-bold text-xl tracking-tight whitespace-nowrap" style={{ color: BRAND_BLUE }}>YLC-MES</span>
@@ -128,19 +137,17 @@ const App: React.FC = () => {
            </div>
         </div>
 
-        {/* Sidebar Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-4 no-scrollbar flex flex-col gap-6">
            
-           {/* Real-time Overview (Stats) */}
            <div>
               <div className="flex items-center gap-2 mb-3 px-1">
                  <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
-                 <h2 className="text-sm font-bold text-slate-600">实时概览</h2>
+                 <h2 className="text-sm font-bold text-slate-600">任务统计</h2>
               </div>
-              <StatsDashboard tasks={filteredTasks.length === tasks.length ? tasks : filteredTasks} />
+              <StatsDashboard tasks={filteredTasks} />
            </div>
 
-           {/* Line Filters */}
+           {activeModule !== 'INCOMING' && (
            <div>
               <div className="flex items-center gap-2 mb-3 px-1">
                   <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
@@ -173,24 +180,22 @@ const App: React.FC = () => {
                  ))}
               </div>
            </div>
+           )}
         </div>
 
-        {/* User Profile Footer */}
         <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center gap-3 shrink-0">
             <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm text-white font-bold" style={{ backgroundColor: BRAND_BLUE }}>
                 <UserCircle size={24} />
             </div>
             <div className="flex-1 min-w-0">
                 <div className="text-sm font-bold text-slate-800 truncate">张工 (QC主管)</div>
-                <div className="text-xs text-slate-500 truncate">质量管理部 - FQC组</div>
+                <div className="text-xs text-slate-500 truncate">质量管理部 - IQC/FQC组</div>
             </div>
         </div>
       </aside>
 
       {/* 2. MAIN CONTENT AREA */}
       <main className="flex-1 flex flex-col min-w-0 bg-slate-50/50 relative">
-        
-        {/* Header Toolbar (Matches StationCollection Header) */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shadow-sm shrink-0 z-10">
             <div className="flex items-center gap-3">
                  <button onClick={() => setCurrentView('HOME')} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors">
@@ -206,9 +211,7 @@ const App: React.FC = () => {
             </div>
         </header>
 
-        {/* Filters & Actions Toolbar */}
         <div className="px-6 py-4 flex items-center justify-between shrink-0">
-             {/* Left: Tab Switcher (Pill Style) */}
              <div className="flex bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
                 <button 
                    onClick={() => setFilter(prev => ({...prev, status: InspectionStatus.PENDING}))}
@@ -225,12 +228,11 @@ const App: React.FC = () => {
                 </button>
              </div>
 
-             {/* Right: Search & Actions */}
              <div className="flex items-center gap-3">
                 <div className="relative w-96">
                    <input 
                       type="text" 
-                      placeholder="输入单号 / 产品名称 / SN..."
+                      placeholder={activeModule === 'INCOMING' ? "输入ASN编号 / 供应商 / 物料..." : "输入单号 / 产品名称 / SN..."}
                       value={filter.search}
                       onChange={(e) => setFilter(prev => ({...prev, search: e.target.value}))}
                       className="w-full bg-white border border-slate-200 pl-10 pr-4 py-2.5 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
@@ -245,7 +247,6 @@ const App: React.FC = () => {
              </div>
         </div>
 
-        {/* Task Grid Area */}
         <div className="flex-1 overflow-y-auto px-6 pb-6">
             {filteredTasks.length > 0 ? (
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
@@ -269,7 +270,6 @@ const App: React.FC = () => {
             )}
         </div>
       </main>
-      
     </div>
   );
 };

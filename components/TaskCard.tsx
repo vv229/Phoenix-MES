@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Task, InspectionStatus, InspectionResult } from '../types';
 
@@ -26,6 +27,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick, showProcess =
     }
   };
 
+  const isIncoming = !!task.asnNo;
+
   return (
     <div 
       onClick={onClick}
@@ -47,29 +50,45 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick, showProcess =
       {/* Details Grid: Key-Value Pairs */}
       <div className="grid grid-cols-2 gap-y-3 gap-x-4 pl-3 text-xs mb-2 flex-1">
         
-        {/* Work Order */}
-        <div className="flex flex-col gap-0.5">
-            <span className="text-slate-400 font-medium">工单号</span>
-            <span className="font-bold text-slate-700 font-mono tracking-tight">{task.workOrder}</span>
-        </div>
-
-        {/* Serial Number */}
-        <div className="flex flex-col gap-0.5">
-            <span className="text-slate-400 font-medium">序列号</span>
-            <span className="font-bold text-slate-700 font-mono tracking-tight truncate" title={task.sn}>{task.sn}</span>
-        </div>
-
-        {/* SO/NO */}
-        <div className="flex flex-col gap-0.5">
-            <span className="text-slate-400 font-medium">SO/NO</span>
-            <span className="font-bold text-slate-700 font-mono tracking-tight truncate">{task.salesOrder}/{task.lineNo}</span>
-        </div>
-
-        {/* Line */}
-        <div className="flex flex-col gap-0.5">
-            <span className="text-slate-400 font-medium">线体</span>
-            <span className="font-bold text-slate-700 truncate">{task.line}</span>
-        </div>
+        {isIncoming ? (
+          <>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">ASN编号</span>
+                <span className="font-bold text-slate-700 font-mono tracking-tight">{task.asnNo}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">供应商</span>
+                <span className="font-bold text-slate-700 truncate" title={task.supplierName}>{task.supplierName}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">采购订单</span>
+                <span className="font-bold text-slate-700 font-mono tracking-tight">{task.poNo}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">行号</span>
+                <span className="font-bold text-slate-700">{task.lineNo}</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">工单号</span>
+                <span className="font-bold text-slate-700 font-mono tracking-tight">{task.workOrder}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">序列号</span>
+                <span className="font-bold text-slate-700 font-mono tracking-tight truncate" title={task.sn}>{task.sn}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">SO/NO</span>
+                <span className="font-bold text-slate-700 font-mono tracking-tight truncate">{task.salesOrder}/{task.lineNo}</span>
+            </div>
+            <div className="flex flex-col gap-0.5">
+                <span className="text-slate-400 font-medium">线体</span>
+                <span className="font-bold text-slate-700 truncate">{task.line}</span>
+            </div>
+          </>
+        )}
 
         {/* Process (Conditional Field) */}
         {showProcess && task.processName && (
