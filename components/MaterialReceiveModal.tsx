@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, ScanLine, ArrowRight, Truck, Box, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
+import { X, ScanLine, ArrowRight, Truck, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 
 interface TODetail {
   toNo: string;

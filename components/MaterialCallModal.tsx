@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Search, ScanLine, ShoppingCart, Package, Grid, List, Check, Plus, Minus, AlertCircle, Send } from 'lucide-react';
+import { X, ShoppingCart, Package, Grid, List, Check, Plus, Minus, AlertCircle, Send } from 'lucide-react';
 import { MOCK_BOM } from '../constants';
 
 interface MaterialCallModalProps {
@@ -84,13 +84,13 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
             onClick={() => setActiveTab('WO')}
             className={`flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTab === 'WO' ? 'bg-white text-blue-700 border-b-4 border-blue-700' : 'text-slate-500 hover:text-slate-700'}`}
           >
-            <List size={18} /> 工单工序叫料 (备料校验)
+            <List size={18} /> 工单工序叫料 (配料状态校验)
           </button>
           <button 
             onClick={() => setActiveTab('KANBAN')}
             className={`flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 transition-all ${activeTab === 'KANBAN' ? 'bg-white text-blue-700 border-b-4 border-blue-700' : 'text-slate-500 hover:text-slate-700'}`}
           >
-            <Grid size={18} /> 看板件叫料 (螺丝/螺母/辅材)
+            <Grid size={18} /> 看板件叫料 (螺丝/辅材)
           </button>
         </div>
 
@@ -103,7 +103,7 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
                 <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl flex items-start gap-3">
                     <AlertCircle className="text-blue-500 shrink-0" size={20} />
                     <p className="text-xs text-blue-700 leading-relaxed font-medium">
-                        提示：系统将根据【仓库配料看板】状态进行校验。仅标记为 <span className="font-bold">“完成配料”</span> 的工序可发起叫料申请。若工序尚未完成配料，请联系仓库人员核实。
+                        提示：根据仓库备料看板，仅显示 <span className="font-bold text-green-700">“完成配料”</span> 的工序可发起叫料申请。若工序状态非完成配料，点击将无法选中。
                     </p>
                 </div>
 
@@ -118,7 +118,7 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
                                 onClick={() => toggleProcess(proc.id, proc.status)}
                                 className={`
                                     bg-white border-2 rounded-xl p-5 transition-all flex flex-col justify-between min-h-[120px] relative overflow-hidden
-                                    ${isCompleted ? 'cursor-pointer hover:shadow-lg' : 'opacity-60 grayscale cursor-not-allowed bg-slate-50/50'}
+                                    ${isCompleted ? 'cursor-pointer hover:shadow-lg hover:border-blue-200' : 'opacity-60 grayscale cursor-not-allowed bg-slate-50/50'}
                                     ${isSelected ? 'border-blue-600 ring-4 ring-blue-50 shadow-md' : 'border-slate-100'}
                                 `}
                             >
@@ -154,9 +154,9 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
                                 )}
                                 
                                 <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between text-[11px] font-bold">
-                                    <span className="text-slate-400">预计送货至: 线边仓 A区-02</span>
+                                    <span className="text-slate-400">配送点: 线边仓 A区-02</span>
                                     <span className={isCompleted ? 'text-green-600' : 'text-slate-400'}>
-                                        {isCompleted ? '具备叫料条件' : '不可选'}
+                                        {isCompleted ? '备料就绪' : '备料中'}
                                     </span>
                                 </div>
                             </div>
@@ -198,15 +198,15 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
 
           {/* Right Panel Summary */}
           <div className="w-80 border-l border-slate-200 bg-white p-5 flex flex-col shrink-0">
-             <h3 className="font-black text-slate-800 mb-6 flex items-center gap-2 text-base">
-                <ShoppingCart size={20} className="text-blue-600"/> 待叫料清单 ({totalCount})
+             <h3 className="font-black text-slate-800 mb-6 flex items-center gap-2 text-base uppercase tracking-tight">
+                <ShoppingCart size={20} className="text-blue-600"/> 叫料明细 ({totalCount})
              </h3>
              
              <div className="flex-1 overflow-y-auto space-y-3 mb-6 no-scrollbar">
                 {totalCount === 0 && (
                     <div className="h-full flex flex-col items-center justify-center text-slate-300 italic">
-                        <Package size={48} className="opacity-20 mb-2" />
-                        <span className="text-sm">尚未选入任何项目</span>
+                        <Package size={48} className="opacity-10 mb-2" />
+                        <span className="text-sm">尚未选入项目</span>
                     </div>
                 )}
                 
@@ -216,7 +216,7 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
                    return (
                     <div key={id} className="flex justify-between items-center bg-blue-50 border border-blue-100 p-3 rounded-lg group animate-in slide-in-from-right duration-200">
                       <div className="flex flex-col">
-                        <span className="text-[10px] font-bold text-blue-500">工序叫料</span>
+                        <span className="text-[10px] font-bold text-blue-500 uppercase">工序申请</span>
                         <span className="font-bold text-blue-900 text-sm truncate w-40">{p?.name}</span>
                       </div>
                       <button onClick={() => toggleProcess(id, 'COMPLETED')} className="p-1 hover:bg-white rounded text-blue-400 hover:text-red-500">
@@ -246,23 +246,12 @@ export const MaterialCallModal: React.FC<MaterialCallModalProps> = ({ isOpen, on
                 })}
              </div>
 
-             <div className="space-y-3">
-                 <div className="bg-slate-50 p-3 rounded-lg">
-                    <div className="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>工序申请项:</span>
-                        <span className="font-bold text-slate-800">{selectedProcesses.length}</span>
-                    </div>
-                    <div className="flex justify-between text-xs text-slate-500">
-                        <span>辅材申请项:</span>
-                        <span className="font-bold text-slate-800">{Object.keys(selectedItems).length}</span>
-                    </div>
-                 </div>
-                 
+             <div className="space-y-3 pt-4 border-t border-slate-100">
                  <button 
                   disabled={totalCount === 0}
                   className={`w-full py-4 rounded-xl font-black shadow-xl transition-all flex items-center justify-center gap-2 text-base active:scale-95 ${totalCount > 0 ? 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-blue-200' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
                  >
-                   <Send size={20}/> 确认发起叫料
+                   <Send size={20}/> 发起配送拉动
                  </button>
              </div>
           </div>
