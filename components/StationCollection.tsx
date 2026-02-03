@@ -81,6 +81,8 @@ const MOCK_WOS = [
 export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, onHome }) => {
   const [collectionItems, setCollectionItems] = useState<CollectionItem[]>(INITIAL_ITEMS);
   const [activeWOId, setActiveWOId] = useState('10907558');
+  const [activeProcess, setActiveProcess] = useState('大件装配');
+  const [activeStation, setActiveStation] = useState('工位-大件装配');
   const [isPreProductionOpen, setIsPreProductionOpen] = useState(false);
   const [isEsopOpen, setIsEsopOpen] = useState(false);
   const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
@@ -128,7 +130,13 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
       <PreProductionCheck isOpen={isPreProductionOpen} onClose={() => setIsPreProductionOpen(false)} />
       <PDFViewer isOpen={isEsopOpen} onClose={() => setIsEsopOpen(false)} title="作业指导书 - AC-Cx.pdf" pdfUrl={PUBLIC_PDF_URL} />
       
-      <MaterialCallModal isOpen={isMaterialCallOpen} onClose={() => setIsMaterialCallOpen(false)} currentWO={activeWOId} />
+      <MaterialCallModal 
+        isOpen={isMaterialCallOpen} 
+        onClose={() => setIsMaterialCallOpen(false)} 
+        currentWO={activeWOId} 
+        currentProcess={activeProcess}
+        currentStation={activeStation}
+      />
       <MaterialReceiveModal isOpen={isMaterialReceiveOpen} onClose={() => setIsMaterialReceiveOpen(false)} />
 
       <DefectSelectionModal 
@@ -225,7 +233,9 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                      {MOCK_WOS.map(wo => (
                          <div 
                             key={wo.id}
-                            onClick={() => setActiveWOId(wo.id)}
+                            onClick={() => {
+                                setActiveWOId(wo.id);
+                            }}
                             className={`border rounded-xl p-3 shadow-sm transition-all cursor-pointer relative overflow-hidden group flex items-center justify-between min-h-[140px] ${activeWOId === wo.id ? 'bg-[#0A2EF5] border-[#0A2EF5] text-white' : 'bg-white border-slate-200 hover:border-blue-300'}`}
                          >
                             <div className="space-y-1.5 text-[10px] w-[60%] shrink-0">
@@ -279,7 +289,7 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
           <header className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-3 shrink-0 z-20 shadow-sm">
               <div className="flex items-center gap-2">
                   <button onClick={onBack} className="p-1.5 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"><ChevronLeft size={24} /></button>
-                  <h1 className="text-lg font-extrabold text-slate-800 tracking-tight">生产采集 - 251205171</h1>
+                  <h1 className="text-lg font-extrabold text-slate-800 tracking-tight">生产采集 - {MOCK_WOS.find(w => w.id === activeWOId)?.sn}</h1>
               </div>
 
               <div className="flex items-center gap-3">
@@ -291,14 +301,31 @@ export const StationCollection: React.FC<StationCollectionProps> = ({ onBack, on
                   </div>
                   <div className="flex items-center gap-1.5">
                       <label className="text-xs font-bold text-slate-500 whitespace-nowrap">工序:</label>
-                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[100px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
+                      <select 
+                        value={activeProcess}
+                        onChange={(e) => {
+                            setActiveProcess(e.target.value);
+                            setActiveStation(`工位-${e.target.value}`);
+                        }}
+                        className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[100px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6"
+                      >
                           <option>大件装配</option>
+                          <option>管配</option>
+                          <option>钎焊</option>
+                          <option>电工</option>
                       </select>
                   </div>
                   <div className="flex items-center gap-1.5">
                       <label className="text-xs font-bold text-slate-500 whitespace-nowrap">工位:</label>
-                      <select className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[120px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6">
+                      <select 
+                        value={activeStation}
+                        onChange={(e) => setActiveStation(e.target.value)}
+                        className="bg-white border border-slate-300 rounded px-2 py-1 text-xs font-bold text-slate-800 focus:outline-none focus:border-blue-500 min-w-[120px] shadow-sm appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2214%22%20height%3D%228%22%20viewBox%3D%220%200%2014%208%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M1%201L7%207L13%201%22%20stroke%3D%22%2364748B%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%22%3D%22round%22/%3E%3C/svg%3E')] bg-[length:10px_auto] bg-[right_8px_center] bg-no-repeat pr-6"
+                      >
                           <option>工位-大件装配</option>
+                          <option>工位-管配</option>
+                          <option>工位-钎焊</option>
+                          <option>工位-电工</option>
                       </select>
                   </div>
                   <div className="w-px h-6 bg-slate-300 mx-1"></div>
