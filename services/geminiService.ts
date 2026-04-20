@@ -1,13 +1,11 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { Task } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// Fix: Initialize GoogleGenAI correctly with the apiKey property and follow coding guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const analyzeInspectionTasks = async (tasks: Task[]): Promise<string> => {
-  if (!process.env.API_KEY) {
-    return "API Key not configured. Unable to perform AI analysis. Please set process.env.API_KEY.";
-  }
-
   try {
     const prompt = `
       You are an expert Manufacturing Execution System (MES) assistant.
@@ -25,11 +23,13 @@ export const analyzeInspectionTasks = async (tasks: Task[]): Promise<string> => 
       Keep the tone professional and concise.
     `;
 
+    // Fix: Use gemini-3-flash-preview for basic text analysis tasks as per guidelines
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3-flash-preview",
       contents: prompt,
     });
 
+    // Fix: Use .text property directly
     return response.text || "Analysis failed to generate text.";
   } catch (error) {
     console.error("Gemini Analysis Error:", error);

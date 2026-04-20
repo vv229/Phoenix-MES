@@ -19,6 +19,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick, showProcess =
   };
 
   const getStatusLabel = (status: InspectionStatus) => {
+    if (task.deviceCode) {
+        switch (status) {
+            case InspectionStatus.PENDING: return '待确认';
+            case InspectionStatus.COMPLETED: return '已确认';
+            default: return status;
+        }
+    }
     switch (status) {
       case InspectionStatus.PENDING: return '待检';
       case InspectionStatus.IN_PROGRESS: return '检验中';

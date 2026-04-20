@@ -11,18 +11,18 @@ export enum InspectionResult {
   NONE = 'NONE'        // 未出结果
 }
 
-export type InspectionModule = 'FQC' | 'PROCESS' | 'COMPLETION' | 'INCOMING';
+export type InspectionModule = 'FQC' | 'PROCESS' | 'COMPLETION' | 'INCOMING' | 'PICKING' | 'DEVICE_MAINTENANCE' | 'WAREHOUSE_CALL';
 
 export interface Task {
-  id: string;          // 检验单号/ASN编号
+  id: string;          // 检验单号/ASN编号/保养单号
   workOrder?: string;   // 工单 (FQC/过程)
   salesOrder?: string;  // 销售单号
   lineNo: string;      // 行号 (ASN行号或工单行号)
-  productCode: string; // 物料编码
-  productName: string; // 物料描述
+  productCode: string; // 物料编码/设备编码
+  productName: string; // 物料描述/设备名称
   unitModel?: string;   // 机组型号
   line?: string;        // 产线
-  inspector: string;   // 检验员
+  inspector: string;   // 检验员/保养人
   sn: string;          // SN/序列号
   processName?: string; // 工序名称
   status: InspectionStatus;
@@ -48,6 +48,79 @@ export interface Task {
   deliveryQty?: string;
   unit?: string;
   docStatus?: string;
+
+  // 设备保养专用字段
+  deviceCode?: string;
+  deviceName?: string;
+  department?: string; // 确认部门
+  maintenanceTime?: string; // 保养时间
+  maintenancePerson?: string; // 保养人
+  isRepaired?: boolean; // 是否已报修
+  lastMaintenanceSummary?: string; // 上次保养小结
+}
+
+// --- 物料拣配 (Picking) 相关类型 ---
+
+export type PickingStatus = 'PENDING' | 'PARTIAL' | 'READY'; // 待拣配 | 部分拣配 | 已备料
+
+export interface PickingItem {
+  id: string;
+  materialCode: string;
+  description: string;
+  qty: number;
+  unit: string;
+  sourceLoc: string;
+  admin: string; // 管理员分组
+  isPicked: boolean;
+  pickedTime?: string;
+  assignedCart?: string;
+}
+
+export interface PickingTask {
+  id: string; // 拣配单号
+  soNo: string;
+  woNo: string;
+  planDate: string;
+  model: string;
+  status: PickingStatus;
+  items: PickingItem[];
+  processCode?: string; // 工序编码
+  processName?: string; // 工序名称
+  workshop?: string;    // 车间
+  line?: string;        // 线体
+}
+
+// --- 仓储叫料 (Warehouse Material Call) 相关类型 ---
+export interface MaterialCallItem {
+  id: string;
+  woNo: string; // 工单号
+  planDate: string; // 需求时间
+  materialCode: string; // 物料编码
+  description: string; // 物料名称
+  model: string; // 型号
+  admin: string; // 管理员
+  sourceLoc: string; // 仓储库存地点
+  virtualFlag: string; // 虚拟标识
+  targetLoc: string; // 车间需求地点
+  qty: number; // 需求数量
+  pickedQty: number; // 已拣数量
+  remarks?: string; // 备注
+  status: 'PENDING' | 'PARTIAL' | 'COMPLETED'; // 状态: 待拣配/部分拣配/已拣配
+}
+
+export interface MaintenanceItem {
+  id: string;
+  name: string; // 项目名称: 清洁
+  position: string; // 部位: 机械臂
+  consumables: string; // 项目耗材: 酒精
+  method: string; // 操作方法: 外观
+  minValue?: number;
+  maxValue?: number;
+  actualValue?: number;
+  result: 'OK' | 'NG' | 'NA' | null; // 合格 | 不合格 | 不适用
+  description?: string; // 缺陷描述
+  photos: string[]; // 图片上传
+  type: 'QUALITATIVE' | 'QUANTITATIVE';
 }
 
 export interface FilterState {
