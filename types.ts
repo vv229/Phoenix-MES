@@ -201,6 +201,19 @@ export interface StationLog {
   message: string;
 }
 
+export interface AsnDeliveryTask {
+  id: string; // ASN单号
+  picker: string; // 拣配员
+  status: 'UNPRINTED' | 'PRINTED'; // 未打印 | 已打印
+  itemCount: number; // 物料件数
+  cart: string; // 料车
+  inventoryLoc: string; // 库存地点
+  pickingTime: string; // 拣配时间
+  sourceLoc: string; // 源库位
+  targetLoc: string; // 目标库位
+  items?: PickingItem[]; // 明细信息
+}
+
 export interface EquipmentItem {
   id: string;
   code: string;

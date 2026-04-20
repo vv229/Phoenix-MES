@@ -31,12 +31,16 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
   const [dateFilter, setDateFilter] = useState('');
   const [adminFilter, setAdminFilter] = useState('');
   const [targetLocFilter, setTargetLocFilter] = useState('');
+  const [woNoFilter, setWoNoFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
 
   const filteredItems = items.filter(item => {
     const matchesDate = dateFilter ? item.planDate.includes(dateFilter) : true;
     const matchesAdmin = adminFilter ? item.admin.includes(adminFilter) : true;
     const matchesLoc = targetLocFilter ? item.targetLoc.includes(targetLocFilter) : true;
-    return matchesDate && matchesAdmin && matchesLoc;
+    const matchesWoNo = woNoFilter ? item.woNo.includes(woNoFilter) : true;
+    const matchesStatus = statusFilter !== 'ALL' ? item.status === statusFilter : true;
+    return matchesDate && matchesAdmin && matchesLoc && matchesWoNo && matchesStatus;
   });
 
   const getStatusStyle = (status: string) => {
@@ -320,6 +324,16 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
         <div className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between shadow-sm z-10 gap-4">
             <div className="flex items-center gap-4 flex-wrap flex-1">
                 <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+                    <ClipboardList size={16} className="text-slate-400" />
+                    <input 
+                        type="text"
+                        placeholder="工单号"
+                        value={woNoFilter}
+                        onChange={(e) => setWoNoFilter(e.target.value)}
+                        className="bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 w-32"
+                    />
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
                     <Calendar size={16} className="text-slate-400" />
                     <input 
                         type="date"
@@ -335,7 +349,7 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
                         placeholder="管理员"
                         value={adminFilter}
                         onChange={(e) => setAdminFilter(e.target.value)}
-                        className="bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 w-32"
+                        className="bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 w-24"
                     />
                 </div>
                 <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
@@ -345,8 +359,20 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
                         placeholder="车间库存地点"
                         value={targetLocFilter}
                         onChange={(e) => setTargetLocFilter(e.target.value)}
-                        className="bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 w-40"
+                        className="bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400 w-32"
                     />
+                </div>
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+                    <select 
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="bg-transparent text-sm font-bold text-slate-700 outline-none w-24"
+                    >
+                        <option value="ALL">全部状态</option>
+                        <option value="PENDING">待拣配</option>
+                        <option value="PARTIAL">部分拣配</option>
+                        <option value="COMPLETED">已拣配</option>
+                    </select>
                 </div>
             </div>
 

@@ -1,5 +1,5 @@
 
-import { Task, InspectionStatus, InspectionResult, PickingTask, BomItem, EquipmentItem, MaterialCallItem } from './types';
+import { Task, InspectionStatus, InspectionResult, PickingTask, BomItem, EquipmentItem, MaterialCallItem, AsnDeliveryTask } from './types';
 
 export const MOCK_TASKS: Task[] = [
   // 来料检验单据 (IQC)
@@ -314,50 +314,63 @@ export const MOCK_EQUIPMENT: EquipmentItem[] = [
   }
 ];
 
+const generateRandomDate = (startObj: Date, endObj: Date): string => {
+  const start = startObj.getTime();
+  const end = endObj.getTime();
+  const date = new Date(start + Math.random() * (end - start));
+  return date.toISOString().split('T')[0];
+};
+
+const startDate = new Date('2026-04-20');
+const endDate = new Date('2026-05-05');
+
+const ADMINS_LIST = ['01', '02', '03', '04', '05', '06', '07'];
+const TARGET_LOCS_LIST = ['4C', 'IDU', 'M', 'A3', '02MV', '05K', '06DE', '06N'];
+
 const MOCK_MATERIAL_CALLS_BASE: MaterialCallItem[] = [
   {
-    id: 'MC-20240501-001',
+    id: 'MC-20260420-001',
     woNo: 'WO-10907558',
-    planDate: '2024-05-01',
+    planDate: '2026-04-20',
     materialCode: 'MAT-8001',
     description: '冷凝器风扇电机',
     model: '30XQ0600GLBW',
-    admin: '张工',
+    admin: '01',
     sourceLoc: 'A1-02-01',
     virtualFlag: '否',
-    targetLoc: '星火1线装配台',
+    targetLoc: '4C',
     qty: 24,
     pickedQty: 0,
     remarks: '加急',
     status: 'PENDING'
   },
   {
-    id: 'MC-20240501-002',
+    id: 'MC-20260422-002',
     woNo: 'WO-10907558',
-    planDate: '2024-05-01',
+    planDate: '2026-04-22',
     materialCode: 'MAT-8002',
     description: '压缩机减震垫',
     model: '06TVA819',
-    admin: '王库管',
+    admin: '02',
     sourceLoc: 'B3-01-02',
     virtualFlag: '是',
-    targetLoc: '星火2线装配台',
+    targetLoc: 'IDU',
     qty: 100,
     pickedQty: 20,
     remarks: '',
     status: 'PARTIAL'
   },
   {
-    id: 'MC-20240502-003',
+    id: 'MC-20260425-003',
     woNo: 'WO-10907559',
-    planDate: '2024-05-02',
+    planDate: '2026-04-25',
     materialCode: 'MAT-8003',
     description: '冷水机控制器',
     model: 'CTRL-V2',
-    admin: '王库管',
+    admin: '03',
     sourceLoc: 'C1-01',
     virtualFlag: '否',
-    targetLoc: '螺杆1线',
+    targetLoc: 'M',
     qty: 5,
     pickedQty: 5,
     remarks: '需校验程序',
@@ -367,8 +380,6 @@ const MOCK_MATERIAL_CALLS_BASE: MaterialCallItem[] = [
 
 const generateMoreCalls = (count: number): MaterialCallItem[] => {
   const results: MaterialCallItem[] = [];
-  const admins = ['张工', '王库管', '李主管', '陈专员', '赵调度'];
-  const locations = ['星火1线装配台', '星火2线装配台', '螺杆1线', '螺杆2线', '离心1线', '管配线'];
   const sourceLocs = ['A1-02-01', 'B3-01-02', 'C1-01', 'D2-04-01', 'E5-02-05', 'F-R01-01'];
   const descs = ['冷凝器风扇电机', '压缩机减震垫', '冷水机控制器', '电子膨胀阀', '冷媒过滤器', '水温传感器', '高压开关', '接线端子排', '导热硅脂', '固定支架', '离心压力阀', '触摸屏总成'];
   const models = ['30XQ0600', '06TVA819', 'CTRL-V2', 'EXV-001', 'FIL-10A', 'WTS-500', 'HPS-30', 'TB-012', 'TP-01', 'FB-100', 'CPV-002', 'TS-10'];
@@ -380,16 +391,16 @@ const generateMoreCalls = (count: number): MaterialCallItem[] => {
     const descIndex = i % descs.length;
 
     results.push({
-      id: `MC-20240503-${(i + 4).toString().padStart(3, '0')}`,
+      id: `MC-202604-${(i + 4).toString().padStart(3, '0')}`,
       woNo: `WO-1090${7600 + i}`,
-      planDate: `2024-05-${(i % 10 + 3).toString().padStart(2, '0')}`,
+      planDate: generateRandomDate(startDate, endDate),
       materialCode: `MAT-9${(i + 1).toString().padStart(3, '0')}`,
       description: descs[descIndex],
       model: models[descIndex],
-      admin: admins[i % admins.length],
+      admin: ADMINS_LIST[i % ADMINS_LIST.length],
       sourceLoc: sourceLocs[i % sourceLocs.length],
       virtualFlag: i % 5 === 0 ? '是' : '否',
-      targetLoc: locations[i % locations.length],
+      targetLoc: TARGET_LOCS_LIST[i % TARGET_LOCS_LIST.length],
       qty: qty,
       pickedQty: pickedQty,
       remarks: i % 7 === 0 ? '加急调拨' : (i % 11 === 0 ? '缺货需催交' : ''),
@@ -402,4 +413,58 @@ const generateMoreCalls = (count: number): MaterialCallItem[] => {
 export const MOCK_MATERIAL_CALLS: MaterialCallItem[] = [
   ...MOCK_MATERIAL_CALLS_BASE,
   ...generateMoreCalls(30)
+];
+
+export const MOCK_ASN_DELIVERY_TASKS: AsnDeliveryTask[] = [
+  {
+    id: 'ASN-20260420-001',
+    picker: '王建国',
+    status: 'UNPRINTED',
+    itemCount: 15,
+    cart: 'C-010',
+    inventoryLoc: 'W-01',
+    pickingTime: '2026-04-20 08:30:00',
+    sourceLoc: 'A区-原料仓',
+    targetLoc: 'S1-车间产线仓',
+    items: [
+      { id: '1', materialCode: 'MAT-8001', description: '冷凝器风扇电机', qty: 5, unit: 'SET', sourceLoc: 'A1-02-01', admin: '01', isPicked: true, pickedTime: '2026-04-20 08:15' },
+      { id: '2', materialCode: 'MAT-8002', description: '压缩机减震垫', qty: 10, unit: 'PC', sourceLoc: 'B3-01-02', admin: '02', isPicked: true, pickedTime: '2026-04-20 08:20' }
+    ]
+  },
+  {
+    id: 'ASN-20260421-002',
+    picker: '李大伟',
+    status: 'PRINTED',
+    itemCount: 42,
+    cart: 'C-015',
+    inventoryLoc: 'W-02',
+    pickingTime: '2026-04-21 14:20:00',
+    sourceLoc: 'B区-半成品仓',
+    targetLoc: 'S2-装配线仓',
+    items: [
+      { id: '3', materialCode: 'MAT-8003', description: '冷水机控制器', qty: 2, unit: 'SET', sourceLoc: 'C1-01', admin: '03', isPicked: true, pickedTime: '2026-04-21 14:10' }
+    ]
+  },
+  {
+    id: 'ASN-20260422-003',
+    picker: '张小强',
+    status: 'UNPRINTED',
+    itemCount: 8,
+    cart: 'C-022',
+    inventoryLoc: 'W-03',
+    pickingTime: '2026-04-22 09:15:00',
+    sourceLoc: 'A区-原料仓',
+    targetLoc: 'S1-车间产线仓'
+  },
+  {
+    id: 'ASN-20260425-004',
+    picker: '赵明',
+    status: 'PRINTED',
+    itemCount: 120,
+    cart: 'C-005',
+    inventoryLoc: 'W-01',
+    pickingTime: '2026-04-25 16:45:00',
+    sourceLoc: 'C区-成品仓',
+    targetLoc: 'SAP-虚拟仓'
+  }
 ];

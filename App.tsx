@@ -18,9 +18,10 @@ import { StationCollection } from './components/StationCollection';
 import { LoginView } from './components/LoginView';
 import { MaterialPicking } from './components/MaterialPicking';
 import { WarehouseMaterialCall } from './components/WarehouseMaterialCall';
+import { AsnDeliveryNote } from './components/AsnDeliveryNote';
 import { CarrierLogo } from './components/CarrierLogo';
 
-type ViewState = 'LOGIN' | 'HOME' | 'STATION_COLLECTION' | 'FQC_LIST' | 'PICKING' | 'WAREHOUSE_CALL';
+type ViewState = 'LOGIN' | 'HOME' | 'STATION_COLLECTION' | 'FQC_LIST' | 'PICKING' | 'WAREHOUSE_CALL' | 'ASN_DELIVERY';
 
 const BRAND_BLUE = '#0A2EF5';
 
@@ -133,6 +134,14 @@ const App: React.FC = () => {
   if (currentView === 'WAREHOUSE_CALL') {
       return (
           <WarehouseMaterialCall 
+            onBack={() => setCurrentView('HOME')}
+          />
+      );
+  }
+
+  if (currentView === 'ASN_DELIVERY') {
+      return (
+          <AsnDeliveryNote 
             onBack={() => setCurrentView('HOME')}
           />
       );

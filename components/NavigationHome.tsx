@@ -80,8 +80,10 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                 <div className="mt-10">
                     <h2 className="text-2xl font-bold text-slate-900 mb-6 border-l-4 border-blue-600 pl-4">仓储管理</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                        <NavCard title="仓储叫料" icon={<Truck size={32} />} onClick={() => onNavigate('WAREHOUSE_CALL', 'WAREHOUSE_CALL')} color="text-teal-600" />
-                        <NavCard title="物料拣配" icon={<LayoutGrid size={32} />} onClick={() => onNavigate('PICKING', 'PICKING')} color="text-amber-600" />
+                        
+                        <NavCard title="仓储叫料" icon={<ClipboardList size={32} />} onClick={() => onNavigate('WAREHOUSE_CALL', 'WAREHOUSE_CALL' as any)} color="text-teal-600" />
+                        <NavCard title="拣配任务" icon={<LayoutGrid size={32} />} onClick={() => onNavigate('PICKING', 'PICKING' as any)} color="text-amber-600" />
+                        <NavCard title="ASN送货单" icon={<Truck size={32} />} onClick={() => onNavigate('ASN_DELIVERY', 'INCOMING' as any)} color="text-indigo-600" />
                     </div>
                     
                 </div>
