@@ -42,9 +42,9 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
   const [tasks, setTasks] = useState<PickingTask[]>(MOCK_PICKING_TASKS);
   const [selectedTask, setSelectedTask] = useState<(PickingTask & { items: ExtendedPickingItem[] }) | null>(null);
   const [search, setSearch] = useState('');
-  const [processFilter, setProcessFilter] = useState('ALL');
-  const [workshopFilter, setWorkshopFilter] = useState('ALL');
-  const [lineFilter, setLineFilter] = useState('ALL');
+  const [dateFilter, setDateFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [adminFilter, setAdminFilter] = useState('ALL');
   
   // 详情页状态
   const [cartBarcode, setCartBarcode] = useState('');
@@ -65,11 +65,11 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
   const [shortageReason, setShortageReason] = useState<string>('');
 
   const filteredTasks = tasks.filter(t => {
-    const matchesSearch = t.id.includes(search) || t.soNo.includes(search) || t.woNo.includes(search);
-    const matchesProcess = processFilter === 'ALL' || t.processCode === processFilter;
-    const matchesWorkshop = workshopFilter === 'ALL' || t.workshop === workshopFilter;
-    const matchesLine = lineFilter === 'ALL' || t.line === lineFilter;
-    return matchesSearch && matchesProcess && matchesWorkshop && matchesLine;
+    const matchesSearch = search ? (t.id.includes(search) || t.soNo.includes(search) || t.woNo.includes(search)) : true;
+    const matchesDate = dateFilter ? t.planDate === dateFilter : true;
+    const matchesStatus = statusFilter === 'ALL' || t.status === statusFilter;
+    const matchesAdmin = adminFilter === 'ALL' || t.items.some(i => i.admin === adminFilter);
+    return matchesSearch && matchesDate && matchesStatus && matchesAdmin;
   });
 
   const getStatusStyle = (status: PickingStatus) => {
@@ -217,7 +217,7 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shadow-sm shrink-0">
           <div className="flex items-center gap-3">
               <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"><ChevronLeft size={26} strokeWidth={2.5} /></button>
-              <span className="text-slate-800 font-bold text-2xl tracking-wide">物料拣配任务清单</span>
+              <span className="text-slate-800 font-bold text-2xl tracking-wide">拣配任务</span>
           </div>
           <div className="flex items-center gap-4">
               <CarrierLogo className="h-7 w-auto" />
@@ -226,11 +226,11 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
         </header>
 
         <div className="px-6 py-4 flex items-center justify-between bg-white/50 border-b border-slate-200">
-             <div className="flex items-center gap-3">
+             <div className="flex flex-wrap items-center gap-3">
                 <div className="relative w-64">
                    <input 
                       type="text" 
-                      placeholder="搜索 拣配单号 / SO / 工单..."
+                      placeholder="单号..."
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       className="w-full bg-white border border-slate-200 pl-10 pr-4 py-2 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm h-10"
@@ -238,51 +238,44 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
                    <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 </div>
 
-                <button className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#0A2EF5] text-white shadow-md hover:bg-blue-700 active:scale-95 transition-all">
-                   <ScanLine size={20} />
-                </button>
-
                 <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1 shadow-sm h-10">
-                   <Factory size={16} className="text-slate-400" />
-                   <select 
-                      value={workshopFilter}
-                      onChange={(e) => setWorkshopFilter(e.target.value)}
-                      className="bg-transparent text-sm font-bold text-slate-700 outline-none h-full min-w-[80px]"
-                   >
-                      <option value="ALL">全部车间</option>
-                      {WORKSHOPS.map(ws => (
-                        <option key={ws} value={ws}>{ws}</option>
-                      ))}
-                   </select>
+                   <Clock size={16} className="text-slate-400" />
+                   <input 
+                      type="date"
+                      value={dateFilter}
+                      onChange={(e) => setDateFilter(e.target.value)}
+                      className="bg-transparent text-sm font-bold text-slate-700 outline-none h-full"
+                   />
                 </div>
 
                 <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1 shadow-sm h-10">
                    <Layers size={16} className="text-slate-400" />
                    <select 
-                      value={lineFilter}
-                      onChange={(e) => setLineFilter(e.target.value)}
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
                       className="bg-transparent text-sm font-bold text-slate-700 outline-none h-full min-w-[80px]"
                    >
-                      <option value="ALL">全部线体</option>
-                      {LINES.map(line => (
-                        <option key={line} value={line}>{line}</option>
-                      ))}
+                      <option value="ALL">状态 (全部)</option>
+                      <option value="PENDING">待拣配</option>
+                      <option value="PARTIAL">部分拣配</option>
+                      <option value="READY">已备料</option>
                    </select>
                 </div>
 
                 <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1 shadow-sm h-10">
-                   <Settings2 size={16} className="text-slate-400" />
-                   <select 
-                      value={processFilter}
-                      onChange={(e) => setProcessFilter(e.target.value)}
-                      className="bg-transparent text-sm font-bold text-slate-700 outline-none h-full min-w-[100px]"
-                   >
-                      <option value="ALL">全部工序</option>
-                      {PROCESSES.map(p => (
-                        <option key={p.code} value={p.code}>{p.code} {p.name}</option>
-                      ))}
-                   </select>
+                   <UserCircle size={16} className="text-slate-400" />
+                   <input 
+                      type="text"
+                      placeholder="管理员(01/02...)"
+                      value={adminFilter === 'ALL' ? '' : adminFilter}
+                      onChange={(e) => setAdminFilter(e.target.value || 'ALL')}
+                      className="bg-transparent text-sm font-bold text-slate-700 outline-none h-full w-32"
+                   />
                 </div>
+
+                <button className="h-10 w-10 flex items-center justify-center rounded-lg bg-[#0A2EF5] text-white shadow-md hover:bg-blue-700 active:scale-95 transition-all ml-1">
+                   <ScanLine size={20} />
+                </button>
              </div>
 
              <div className="flex gap-4">

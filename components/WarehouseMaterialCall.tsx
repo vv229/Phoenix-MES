@@ -15,13 +15,13 @@ interface WarehouseMaterialCallProps {
 const WAREHOUSES = ['A区-原料仓', 'B区-半成品仓', 'C区-成品仓', 'D区-包材仓', 'S1-车间产线仓', 'S2-装配线仓', 'SAP-虚拟仓'];
 
 const MOCK_MASTER_MATERIALS = [
-  { id: 'm1', code: 'W-001', name: '螺纹钢', model: 'Φ16', unit: '吨', stock: 120 },
-  { id: 'm2', code: 'W-002', name: '铝型材', model: 'AL-6061', unit: 'kg', stock: 50 },
-  { id: 'm3', code: 'C-010', name: '电阻', model: '10K 1%', unit: '个', stock: 10000 },
-  { id: 'm4', code: 'C-011', name: '电容', model: '100uF 16V', unit: '个', stock: 5000 },
-  { id: 'm5', code: 'P-005', name: '包装箱', model: '500x500', unit: '个', stock: 300 },
-  { id: 'm6', code: 'P-006', name: '防静电袋', model: '100x150', unit: '个', stock: 2000 },
-  { id: 'm7', code: 'A-001', name: '组装附件包', model: 'Standard', unit: '套', stock: 150 },
+  { id: 'm1', code: 'W-001', name: '螺纹钢', model: 'Φ16', unit: '吨', stock: 120, admin: '01' },
+  { id: 'm2', code: 'W-002', name: '铝型材', model: 'AL-6061', unit: 'kg', stock: 50, admin: '02' },
+  { id: 'm3', code: 'C-010', name: '电阻', model: '10K 1%', unit: '个', stock: 10000, admin: '03' },
+  { id: 'm4', code: 'C-011', name: '电容', model: '100uF 16V', unit: '个', stock: 5000, admin: '04' },
+  { id: 'm5', code: 'P-005', name: '包装箱', model: '500x500', unit: '个', stock: 300, admin: '01' },
+  { id: 'm6', code: 'P-006', name: '防静电袋', model: '100x150', unit: '个', stock: 2000, admin: '02' },
+  { id: 'm7', code: 'A-001', name: '组装附件包', model: 'Standard', unit: '套', stock: 150, admin: '03' },
 ];
 
 export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ onBack }) => {
@@ -223,7 +223,7 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
                           <th className="p-3 border-b border-slate-200">物料编码</th>
                           <th className="p-3 border-b border-slate-200">物料名称</th>
                           <th className="p-3 border-b border-slate-200">型号</th>
-                          <th className="p-3 border-b border-slate-200 text-right">可用库存</th>
+                          <th className="p-3 border-b border-slate-200 text-center">管理员</th>
                           <th className="p-3 border-b border-slate-200 w-32 text-center">调拨数量</th>
                         </tr>
                       </thead>
@@ -248,7 +248,7 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
                               <td className="p-3 font-mono font-black text-slate-700">{m.code}</td>
                               <td className="p-3 font-bold text-slate-800">{m.name}</td>
                               <td className="p-3 text-slate-500">{m.model}</td>
-                              <td className="p-3 text-right font-mono text-slate-600">{m.stock} <span className="text-xs text-slate-400">{m.unit}</span></td>
+                              <td className="p-3 text-center font-bold text-slate-600">{m.admin}</td>
                               <td className="p-3">
                                 {isSelected ? (
                                   <div className="flex items-center gap-1 bg-white border border-blue-200 rounded px-2 py-1" onClick={e => e.stopPropagation()}>
