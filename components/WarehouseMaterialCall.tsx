@@ -54,9 +54,9 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'PENDING': return '待拣配';
-      case 'PARTIAL': return '部分拣配';
-      case 'COMPLETED': return '已拣配';
+      case 'PENDING': return '未叫料';
+      case 'PARTIAL': return '部分叫料';
+      case 'COMPLETED': return '已叫料';
       default: return status;
     }
   };
@@ -369,9 +369,8 @@ export const WarehouseMaterialCall: React.FC<WarehouseMaterialCallProps> = ({ on
                         className="bg-transparent text-sm font-bold text-slate-700 outline-none w-24"
                     >
                         <option value="ALL">全部状态</option>
-                        <option value="PENDING">待拣配</option>
-                        <option value="PARTIAL">部分拣配</option>
-                        <option value="COMPLETED">已拣配</option>
+                        <option value="PENDING">未叫料</option>
+                        <option value="COMPLETED">已叫料</option>
                     </select>
                 </div>
             </div>

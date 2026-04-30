@@ -128,7 +128,7 @@ export const AsnDeliveryNote: React.FC<AsnDeliveryNoteProps> = ({ onBack }) => {
                              <th className="p-4 text-center">状态</th>
                              <th className="p-4 text-center">物料件数</th>
                              <th className="p-4">管理员</th>
-                             <th className="p-4">库存地点</th>
+                             <th className="p-4">拣配任务号</th>
                              <th className="p-4">源库位</th>
                              <th className="p-4">目标库位</th>
                              <th className="p-4">拣配时间</th>
@@ -238,7 +238,7 @@ export const AsnDeliveryNote: React.FC<AsnDeliveryNoteProps> = ({ onBack }) => {
                         <span className="font-bold text-slate-700">{selectedTask.picker}</span>
                     </div>
                     <div className="flex flex-col w-1/2 sm:w-auto">
-                        <span className="text-[10px] uppercase font-black text-slate-400 mb-1">管理员 / 库存地点</span>
+                        <span className="text-[10px] uppercase font-black text-slate-400 mb-1">管理员 / 拣配任务号</span>
                         <span className="font-bold text-slate-700">{selectedTask.cart || '01'} / {selectedTask.inventoryLoc}</span>
                     </div>
                     <div className="flex flex-col w-1/2 sm:w-auto mt-4 sm:mt-0">

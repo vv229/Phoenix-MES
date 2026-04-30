@@ -40,7 +40,7 @@ const LINES = ['星火1线', '星火2线', '螺杆1线', '螺杆2线', '离心1�
 
 export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
   const [tasks, setTasks] = useState<PickingTask[]>(MOCK_PICKING_TASKS);
-  const [selectedTask, setSelectedTask] = useState<(PickingTask & { items: ExtendedPickingItem[] }) | null>(null);
+  const [selectedTask, setSelectedTask] = useState<(Omit<PickingTask, "items"> & { items: ExtendedPickingItem[] }) | null>(null);
   const [search, setSearch] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -304,22 +304,36 @@ export const MaterialPicking: React.FC<MaterialPickingProps> = ({ onBack }) => {
                     className={`bg-white rounded-xl border p-5 flex items-center justify-between shadow-sm transition-all hover:border-blue-400 hover:shadow-md cursor-pointer ${task.status === 'READY' ? 'bg-slate-50/50' : ''}`}
                 >
                     <div className="flex items-center gap-6 flex-1">
-                        <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">拣配单号</span>
+                        <div className="flex flex-col w-48 shrink-0">
+                            <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1">拣配单号</span>
                             <span className="text-lg font-black text-slate-800 font-mono">{task.id}</span>
                         </div>
-                        <div className="h-10 w-px bg-slate-100"></div>
-                        <div className="grid grid-cols-4 gap-x-6 gap-y-2 text-xs font-bold text-slate-600">
-                            <div className="flex items-center gap-2"><ClipboardList size={14} className="text-slate-400"/> SO/ITEM: <span className="font-mono">{task.soNo}</span></div>
-                            <div className="flex items-center gap-2 col-span-2"><LayoutGrid size={14} className="text-slate-400"/> WO: <span className="font-mono">{task.woNo}</span></div>
-                            <div className="flex items-center gap-2"><Box size={14} className="text-slate-400"/> 生产代码: <span>{task.model}</span></div>
-                            
-                            <div className="flex items-center gap-2"><Clock size={14} className="text-slate-400"/> 需求日期: <span>{task.planDate}</span></div>
-                            <div className="flex items-center gap-2 text-slate-500">
-                                <Factory size={14} className="text-slate-400"/> 车间: <span>{task.workshop}</span>
+                        <div className="h-12 w-px bg-slate-200"></div>
+                        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-6 text-sm font-bold text-slate-600">
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">SO / ITEM</span>
+                                <span className="font-mono text-slate-800">{task.soNo}</span>
                             </div>
-                            <div className="flex items-center gap-2 text-slate-500 col-span-2">
-                                <UserCircle size={14} className="text-slate-400"/> 管理员: <span className="truncate">{Array.from(new Set(task.items.map(i => i.admin))).join(', ')}</span>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">工单 / WO</span>
+                                <span className="font-mono text-slate-800">{task.woNo}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">生产代码</span>
+                                <span className="text-slate-800">{task.model}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">需求日期</span>
+                                <span className="text-slate-800">{task.planDate}</span>
+                            </div>
+                            
+                            <div className="flex flex-col">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">车间</span>
+                                <span className="text-slate-800">{task.workshop}</span>
+                            </div>
+                            <div className="flex flex-col col-span-3">
+                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">管理员</span>
+                                <span className="text-slate-800 truncate">{Array.from(new Set(task.items.map(i => i.admin))).filter(Boolean).join('、')}</span>
                             </div>
                         </div>
                     </div>

@@ -12,6 +12,7 @@ import {
   ChevronDown,
   FileCheck,
   PackageSearch,
+  PackageCheck,
   LayoutGrid,
   ClipboardList
 } from 'lucide-react';
@@ -84,6 +85,7 @@ export const NavigationHome: React.FC<NavigationHomeProps> = ({ onNavigate, onLo
                         <NavCard title="仓储叫料" icon={<ClipboardList size={32} />} onClick={() => onNavigate('WAREHOUSE_CALL', 'WAREHOUSE_CALL' as any)} color="text-teal-600" />
                         <NavCard title="拣配任务" icon={<LayoutGrid size={32} />} onClick={() => onNavigate('PICKING', 'PICKING' as any)} color="text-amber-600" />
                         <NavCard title="ASN送货单" icon={<Truck size={32} />} onClick={() => onNavigate('ASN_DELIVERY', 'INCOMING' as any)} color="text-indigo-600" />
+                        <NavCard title="物料接收" icon={<PackageCheck size={32} />} onClick={() => onNavigate('MATERIAL_RECEIVE')} color="text-pink-600" />
                     </div>
                     
                 </div>
